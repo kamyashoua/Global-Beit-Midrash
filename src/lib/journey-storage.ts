@@ -3,7 +3,6 @@
 import type { IslandPlacements, JourneyStage, Selections } from "@/types/journey";
 
 const STORAGE_KEY = "global-beit-midrash-island-v1";
-const PUBLISHED_KEY = "global-beit-midrash-published-islands-v1";
 
 export type PersistedJourney = {
   stage: JourneyStage;
@@ -54,31 +53,3 @@ export function clearJourney() {
   }
 }
 
-export type StoredPublished = {
-  id: string;
-  savedAt: string;
-  groupName: string;
-  selections: Selections;
-  reflection: string;
-};
-
-export function loadPublished(): StoredPublished[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(PUBLISHED_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw) as StoredPublished[];
-  } catch {
-    return [];
-  }
-}
-
-export function publishIsland(entry: StoredPublished) {
-  if (typeof window === "undefined") return;
-  try {
-    const list = loadPublished();
-    localStorage.setItem(PUBLISHED_KEY, JSON.stringify([entry, ...list]));
-  } catch {
-    /* empty */
-  }
-}

@@ -79,8 +79,9 @@ export const VALUES: SelectableItem[] = [
     title: "Areivut",
     subtitle: "Mutual responsibility",
     description:
-      "We are answerable for one another—not in a vague way, but in real obligations of care, honesty, and protection.",
-    prompt: "What does “we are responsible for each other” demand in ordinary life?",
+      "We are answerable for one another as a Jewish people—not in a vague way, but in real obligations of care, honesty, and protection.",
+    prompt:
+      "What does “we are responsible for each other as a Jewish people” demand in ordinary life?",
     icon: "link",
   },
   {
@@ -97,10 +98,10 @@ export const VALUES: SelectableItem[] = [
     id: "ahavat-israel",
     category: "values",
     title: "Ahavat Yisrael",
-    subtitle: "Love of the Jewish people",
+    subtitle: "Connection to Israel",
     description:
-      "This can mean closeness to Israel as a place, a people, or an ideal—often all three. It invites questions about belonging, disagreement, and loyalty.",
-    prompt: "How do you hold love and critique at the same time—without pretending the tension away?",
+      "This value points to connection with Israel as a place and as part of Jewish continuity. It invites questions about belonging, diversity, and loyalty.",
+    prompt: "Is Israel necessary to connect Jews in the diaspora?",
     icon: "map-pin",
   },
 ];

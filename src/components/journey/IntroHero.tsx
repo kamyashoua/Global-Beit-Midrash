@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -43,6 +44,21 @@ export function IntroHero({
         <p className="mx-auto mt-5 max-w-2xl text-pretty text-base leading-relaxed text-[var(--muted-foreground)] md:text-lg">
           {GUIDE_INTRO}
         </p>
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="mx-auto mt-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)]/55 shadow-sm"
+      >
+        <Image
+          src="/journey-map-light.svg"
+          alt="Journey-themed map illustration"
+          width={1200}
+          height={700}
+          className="h-auto w-full"
+          priority
+        />
       </motion.div>
 
       <motion.div

@@ -16,19 +16,19 @@ type Props = {
 
 const realmStyles = {
   values: {
-    ring: "ring-[#6ea8ff]/35",
-    glow: "shadow-[0_0_0_1px_rgba(110,168,255,0.2)]",
-    selectedBg: "bg-gradient-to-br from-[#1a2a4a]/90 to-[#0f1729]/90",
+    ring: "ring-[#6ea8ff]/45",
+    glow: "shadow-[0_0_0_1px_rgba(110,168,255,0.28)]",
+    selectedBg: "bg-gradient-to-br from-[#f2f7ff] to-[#e4efff]",
   },
   texts: {
-    ring: "ring-[#e8c77b]/40",
-    glow: "shadow-[0_0_0_1px_rgba(232,199,123,0.25)]",
-    selectedBg: "bg-gradient-to-br from-[#2a2418]/95 to-[#14110c]/95",
+    ring: "ring-[#d4b161]/45",
+    glow: "shadow-[0_0_0_1px_rgba(201,162,39,0.28)]",
+    selectedBg: "bg-gradient-to-br from-[#fffaf0] to-[#f8f1de]",
   },
   practices: {
-    ring: "ring-[#5eead4]/35",
-    glow: "shadow-[0_0_0_1px_rgba(94,234,212,0.2)]",
-    selectedBg: "bg-gradient-to-br from-[#0f2622]/95 to-[#0a1816]/95",
+    ring: "ring-[#4bcdb9]/45",
+    glow: "shadow-[0_0_0_1px_rgba(75,205,185,0.25)]",
+    selectedBg: "bg-gradient-to-br from-[#f0fffb] to-[#e3f8f4]",
   },
 } as const;
 
@@ -59,7 +59,7 @@ export function SelectableCard({
           "hover:-translate-y-0.5 hover:shadow-lg",
           selected &&
             cn(
-              "ring-2 ring-offset-2 ring-offset-[#070b14]",
+              "ring-2 ring-offset-2 ring-offset-[var(--ring-offset)]",
               rs.ring,
               rs.glow,
               rs.selectedBg,
@@ -99,15 +99,19 @@ export function SelectableCard({
           </span>
         </span>
 
-        <span className="px-5 pb-2 text-sm leading-relaxed text-[var(--muted-foreground)] md:px-6">
-          {item.description}
-        </span>
-
         {item.quote && (
-          <blockquote className="mx-5 mb-2 rounded-xl border border-[var(--border)] bg-[var(--input)]/50 px-4 py-3 text-sm italic leading-relaxed text-[var(--foreground)]/90 md:mx-6">
+          <blockquote className="mx-5 mb-2 rounded-xl border border-[var(--border)] bg-[var(--input)]/55 px-4 py-3 text-sm leading-relaxed text-[var(--foreground)] md:mx-6">
             “{item.quote}”
           </blockquote>
         )}
+        <span
+          className={cn(
+            "px-5 pb-2 text-sm leading-relaxed text-[var(--muted-foreground)] md:px-6",
+            item.quote && "italic",
+          )}
+        >
+          {item.description}
+        </span>
 
         {item.prompt && (
           <p className="mt-auto border-t border-[var(--border)]/80 px-5 py-4 text-xs leading-relaxed text-[var(--muted-foreground)] md:px-6">

@@ -3,16 +3,20 @@
 import {
   DndContext,
   DragOverlay,
+  KeyboardSensor,
   PointerSensor,
   closestCenter,
+  pointerWithin,
   useDroppable,
   useDraggable,
   useSensor,
   useSensors,
+  type DragStartEvent,
   type DragEndEvent,
+  type CollisionDetection,
 } from "@dnd-kit/core";
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Anchor, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useJourney } from "@/context/JourneyProvider";
@@ -27,75 +31,21 @@ const REALM_LABEL: Record<string, string> = {
   practices: "Practice",
 };
 
-function Slot({
-  slotIndex,
-  item,
-  activeDragId,
-}: {
-  slotIndex: number;
-  item?: SelectableItem;
-  activeDragId: string | null;
-}) {
-  const { setNodeRef, isOver } = useDroppable({ id: `slot-${slotIndex}` });
-  const draggingThis = item && activeDragId === item.id;
+const islandPointerCollision: CollisionDetection = (args) => {
+  const hit = pointerWithin(args);
+  if (hit.length) return hit;
+  return closestCenter(args);
+};
 
+function TokenFace({ item, sign }: { item: SelectableItem; sign?: boolean }) {
   return (
-    <div
-      ref={setNodeRef}
-      className={cn(
-        "relative flex min-h-[88px] flex-col items-center justify-center rounded-2xl border border-dashed p-2 transition-colors md:min-h-[100px]",
-        isOver
-          ? "border-[var(--accent)] bg-[var(--accent)]/10"
-          : "border-[var(--border)] bg-[var(--card)]/30",
-        draggingThis && "opacity-40",
+    <>
+      {sign && (
+        <span
+          className="pointer-events-none absolute left-1/2 top-full h-8 w-[3px] -translate-x-1/2 rounded-full bg-[#8b6d2a]"
+          aria-hidden
+        />
       )}
-      aria-label={`Island slot ${slotIndex + 1}`}
-    >
-      {!item && (
-        <span className="text-center text-[10px] uppercase tracking-wider text-[var(--muted-foreground)]">
-          Drop here
-        </span>
-      )}
-      {item && !draggingThis && (
-        <DraggableToken item={item} compact slotIndex={slotIndex} />
-      )}
-    </div>
-  );
-}
-
-function DraggableToken({
-  item,
-  compact,
-  slotIndex,
-}: {
-  item: SelectableItem;
-  compact?: boolean;
-  slotIndex?: number;
-}) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useDraggable({
-      id: item.id,
-      data: { slotIndex },
-    });
-
-  const style = transform
-    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
-    : undefined;
-
-  return (
-    <button
-      type="button"
-      ref={setNodeRef}
-      style={style}
-      className={cn(
-        "touch-none rounded-xl border border-[var(--border)] bg-[var(--muted)]/50 text-left shadow-sm backdrop-blur-sm transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]",
-        compact ? "w-full max-w-[200px] p-2" : "w-[220px] p-3",
-        isDragging && "z-50 shadow-xl ring-2 ring-[var(--primary)]/40",
-      )}
-      {...listeners}
-      {...attributes}
-      aria-label={`Move ${item.title}`}
-    >
       <span className="flex items-start gap-2">
         <ItemIcon name={item.icon} className="mt-0.5 h-4 w-4 shrink-0 text-[var(--primary)]" />
         <span className="min-w-0">
@@ -107,6 +57,45 @@ function DraggableToken({
           </span>
         </span>
       </span>
+    </>
+  );
+}
+
+function DraggableToken({
+  item,
+  compact,
+  sign,
+}: {
+  item: SelectableItem;
+  compact?: boolean;
+  sign?: boolean;
+}) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({ id: item.id });
+
+  const style = transform
+    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
+    : undefined;
+
+  return (
+    <button
+      type="button"
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        "touch-none cursor-grab active:cursor-grabbing rounded-xl border border-[var(--border)] bg-[var(--muted)]/50 text-left shadow-sm backdrop-blur-sm transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)]",
+        sign
+          ? "relative w-full max-w-[200px] rounded-lg border-[#9a7a35]/45 bg-[#fffaf0]/90 p-2 shadow-[0_8px_18px_rgba(90,70,30,0.22)] md:max-w-[220px]"
+          : compact
+            ? "w-full max-w-[200px] p-2"
+            : "w-[220px] p-3",
+        isDragging && "z-50 shadow-xl ring-2 ring-[var(--primary)]/40",
+      )}
+      {...listeners}
+      {...attributes}
+      aria-label={`Move ${item.title}`}
+    >
+      <TokenFace item={item} sign={sign} />
     </button>
   );
 }
@@ -118,50 +107,83 @@ export function FinalIslandView({
   onContinue: () => void;
   onBack: () => void;
 }) {
-  const { selections, placements, assignSlot } = useJourney();
+  const { selections, placements, placeItemAt, unassignItem } = useJourney();
   const [activeId, setActiveId] = useState<string | null>(null);
+  const lastPointerRef = useRef({ x: 0, y: 0 });
+  const islandRef = useRef<HTMLDivElement | null>(null);
 
   const items = useMemo(() => expandSelections(selections), [selections]);
 
-  const itemBySlot = useMemo(() => {
-    const map: (SelectableItem | undefined)[] = Array.from(
-      { length: 8 },
-      () => undefined,
-    );
-    for (const it of items) {
-      const s = placements[it.id];
-      if (s !== undefined && s >= 0 && s < 8) {
-        map[s] = it;
-      }
-    }
-    // fill gaps if placements missing (hydration edge case)
-    const unplaced = items.filter((it) => placements[it.id] === undefined);
-    let u = 0;
-    for (let i = 0; i < 8; i++) {
-      if (!map[i] && unplaced[u]) {
-        map[i] = unplaced[u];
-        u++;
-      }
-    }
-    return map;
-  }, [items, placements]);
+  const updatePointer = useCallback((e: PointerEvent) => {
+    lastPointerRef.current = { x: e.clientX, y: e.clientY };
+  }, []);
+
+  useEffect(() => {
+    if (!activeId) return;
+    window.addEventListener("pointermove", updatePointer, { capture: true });
+    return () => window.removeEventListener("pointermove", updatePointer, { capture: true });
+  }, [activeId, updatePointer]);
+
+  const placedItems = useMemo(
+    () => items.filter((it) => placements[it.id] !== undefined),
+    [items, placements],
+  );
+  const unplacedItems = useMemo(
+    () => items.filter((it) => placements[it.id] === undefined),
+    [items, placements],
+  );
+  const placedCount = placedItems.length;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(KeyboardSensor),
   );
+
+  const { setNodeRef: setTrayRef, isOver: trayIsOver } = useDroppable({
+    id: "tray",
+  });
+
+  const { setNodeRef: setIslandDroppableRef, isOver: islandIsOver } = useDroppable({
+    id: "island-canvas",
+  });
+
+  const setIslandRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      islandRef.current = el;
+      setIslandDroppableRef(el);
+    },
+    [setIslandDroppableRef],
+  );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(String(event.active.id));
+    const ev = event.activatorEvent;
+    if (ev && "clientX" in ev && "clientY" in ev) {
+      const pe = ev as PointerEvent;
+      lastPointerRef.current = { x: pe.clientX, y: pe.clientY };
+    }
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveId(null);
     if (!over) return;
     const overId = String(over.id);
-    if (!overId.startsWith("slot-")) return;
-    const slotIndex = parseInt(overId.replace("slot-", ""), 10);
-    if (Number.isNaN(slotIndex)) return;
-    assignSlot(String(active.id), slotIndex);
+    if (overId === "tray") {
+      unassignItem(String(active.id));
+      return;
+    }
+    if (overId !== "island-canvas" || !islandRef.current) return;
+    const rect = islandRef.current.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+    const p = lastPointerRef.current;
+    const x = ((p.x - rect.left) / rect.width) * 100;
+    const y = ((p.y - rect.top) / rect.height) * 100;
+    placeItemAt(String(active.id), x, y);
   };
 
   const activeItem = activeId ? findSelectableById(activeId) : undefined;
+  const onIsland = activeItem ? placements[activeItem.id] !== undefined : false;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
@@ -179,37 +201,38 @@ export function FinalIslandView({
           This is the future you chose to carry
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-[var(--muted-foreground)] md:text-lg">
-          Drag your eight choices onto the island rings. Where you place them is
-          part of the story—what sits at the center, what sits at the edge?
+          Drag your eight choices onto the island. When placed, each one becomes
+          a standing sign on the island. You can place them anywhere on the sand
+          and drag again to move them.
         </p>
       </motion.div>
 
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragStart={(e) => setActiveId(String(e.active.id))}
+        collisionDetection={islandPointerCollision}
+        onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
         onDragCancel={() => setActiveId(null)}
       >
-        <div className="relative mx-auto mt-12 max-w-4xl">
+        <div className="relative mx-auto mt-10 max-w-6xl">
           <motion.div
-            className="relative overflow-hidden rounded-[2rem] border border-[var(--border)] bg-gradient-to-b from-[#0f2038]/80 via-[#0b1628]/90 to-[#071018]/95 p-6 shadow-[0_0_80px_rgba(201,162,39,0.12)] md:p-10"
+            className="relative overflow-visible rounded-[2rem] border border-[var(--border)] bg-gradient-to-b from-[#edf5ff] via-[#e5f0ff] to-[#f8fcff] p-6 pt-8 shadow-[0_20px_60px_rgba(54,120,212,0.14)] md:p-10 md:pt-12"
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="pointer-events-none absolute inset-0 opacity-40 [background:radial-gradient(circle_at_30%_20%,rgba(201,162,39,0.25),transparent_45%),radial-gradient(circle_at_70%_80%,rgba(94,234,212,0.15),transparent_40%)]" />
-            <div className="relative mx-auto flex min-h-[320px] max-w-xl flex-col items-center justify-center">
-              <div className="relative h-48 w-72 md:h-56 md:w-96">
+            <div className="pointer-events-none absolute inset-0 opacity-45 [background:radial-gradient(circle_at_30%_20%,rgba(54,120,212,0.18),transparent_45%),radial-gradient(circle_at_70%_80%,rgba(46,169,154,0.16),transparent_40%)]" />
+            <div className="relative mx-auto flex min-h-[520px] max-w-5xl flex-col items-center justify-center">
+              <div className="relative h-[360px] w-full max-w-[620px] overflow-visible py-2 md:h-[430px] md:max-w-[860px]">
                 <svg
                   viewBox="0 0 400 240"
-                  className="h-full w-full drop-shadow-[0_20px_50px_rgba(0,0,0,0.45)]"
+                  className="pointer-events-none h-full w-full drop-shadow-[0_24px_58px_rgba(0,0,0,0.28)]"
                   aria-hidden
                 >
                   <defs>
                     <linearGradient id="sand" x1="0" x2="1" y1="0" y2="1">
-                      <stop offset="0%" stopColor="#c9a227" stopOpacity="0.35" />
-                      <stop offset="100%" stopColor="#1c2b45" stopOpacity="0.9" />
+                      <stop offset="0%" stopColor="#fff0c9" stopOpacity="0.95" />
+                      <stop offset="100%" stopColor="#d7e8ff" stopOpacity="0.92" />
                     </linearGradient>
                     <filter id="glow">
                       <feGaussianBlur stdDeviation="4" result="blur" />
@@ -222,41 +245,89 @@ export function FinalIslandView({
                   <path
                     d="M60 180 C 80 120, 120 90, 200 88 C 280 86, 330 120, 350 175 C 360 200, 320 215, 200 218 C 100 220, 50 210, 60 180 Z"
                     fill="url(#sand)"
-                    stroke="rgba(201,162,39,0.35)"
+                    stroke="rgba(163,133,57,0.45)"
                     strokeWidth="1.5"
                   />
                   <path
                     d="M120 150 C 150 130, 180 125, 210 128 C 250 132, 280 150, 290 175"
                     fill="none"
-                    stroke="rgba(94,234,212,0.35)"
+                    stroke="rgba(46,169,154,0.4)"
                     strokeWidth="1.2"
                     strokeDasharray="4 6"
                   />
                 </svg>
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
                   <div className="flex items-center gap-2 rounded-full border border-[var(--primary)]/30 bg-[var(--card)]/70 px-4 py-2 text-xs font-medium text-[var(--foreground)] shadow-lg backdrop-blur-md">
                     <Sparkles className="h-4 w-4 text-[var(--primary)]" />
                     Your island
                   </div>
                 </div>
+                <div
+                  ref={setIslandRef}
+                  className={cn(
+                    "absolute inset-0 z-20 touch-none rounded-[0.5rem] transition-shadow",
+                    islandIsOver && "ring-2 ring-[var(--accent)]/60 ring-offset-2 ring-offset-transparent",
+                  )}
+                  aria-label="Island — drop signs anywhere on the sand"
+                />
+                <div className="absolute inset-0 z-30 pointer-events-none">
+                  {placedItems.map((item) => {
+                    const pos = placements[item.id]!;
+                    const dimmed = activeId === item.id;
+                    return (
+                      <div
+                        key={item.id}
+                        className="pointer-events-auto absolute"
+                        style={{
+                          left: `${pos.x}%`,
+                          top: `${pos.y}%`,
+                          transform: "translate(-50%, -100%)",
+                        }}
+                      >
+                        <div className={cn(dimmed && "opacity-40")}>
+                          <DraggableToken item={item} compact sign />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
-            <div className="relative mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <Slot
-                  key={i}
-                  slotIndex={i}
-                  item={itemBySlot[i]}
-                  activeDragId={activeId}
-                />
-              ))}
-            </div>
+            <p className="mb-2 text-center text-sm text-[var(--muted-foreground)]">
+              Tip: place what matters most where your eye lands first, or keep it
+              clustered — the layout is yours.
+            </p>
+            <p className="text-center text-xs font-medium text-[var(--muted-foreground)]">
+              {placedCount} / 8 signs placed on the island
+            </p>
           </motion.div>
         </div>
 
+        <div
+          ref={setTrayRef}
+          className={cn("mx-auto mt-8 max-w-5xl", trayIsOver && "rounded-2xl")}
+        >
+          <div className="mt-4 flex flex-wrap justify-center gap-3">
+            {unplacedItems.map((item) => (
+              <DraggableToken key={item.id} item={item} />
+            ))}
+          </div>
+        </div>
+
         <DragOverlay dropAnimation={{ duration: 180 }}>
-          {activeItem ? <DraggableToken item={activeItem} /> : null}
+          {activeItem ? (
+            <div
+              className={cn(
+                "cursor-grabbing rounded-xl border border-[var(--border)] bg-[var(--muted)]/50 text-left shadow-xl ring-2 ring-[var(--primary)]/40 backdrop-blur-sm",
+                onIsland
+                  ? "relative w-full max-w-[200px] rounded-lg border-[#9a7a35]/45 bg-[#fffaf0]/90 p-2 shadow-[0_8px_18px_rgba(90,70,30,0.22)] md:max-w-[220px]"
+                  : "w-[220px] p-3",
+              )}
+            >
+              <TokenFace item={activeItem} sign={onIsland} />
+            </div>
+          ) : null}
         </DragOverlay>
       </DndContext>
 
@@ -264,10 +335,20 @@ export function FinalIslandView({
         <Button type="button" variant="secondary" onClick={onBack}>
           Back
         </Button>
-        <Button type="button" onClick={onContinue}>
+        <Button
+          type="button"
+          onClick={onContinue}
+          disabled={placedCount < 8}
+          aria-disabled={placedCount < 8}
+        >
           Continue to reflection
         </Button>
       </div>
+      {placedCount < 8 && (
+        <p className="mt-3 text-center text-sm text-[var(--muted-foreground)]">
+          Place all 8 signs on the island to continue.
+        </p>
+      )}
     </div>
   );
 }

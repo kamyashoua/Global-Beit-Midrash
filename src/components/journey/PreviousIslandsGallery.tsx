@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Calendar, Users } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Calendar, Loader2, Users } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SAMPLE_ISLANDS } from "@/data/islands";
 import { useJourney } from "@/context/JourneyProvider";
 import { findSelectableById } from "@/lib/resolve-selections";
@@ -17,36 +17,125 @@ function titlesForIds(ids: string[]) {
     .join(" · ");
 }
 
+type ApiIsland = {
+  id: string;
+  groupName: string;
+  dateISO: string;
+  valueIds: string[];
+  textIds: string[];
+  practiceIds: string[];
+  reflection: string;
+};
+
+function excerptFromReflection(reflection: string, max = 200) {
+  const t = reflection.trim();
+  if (!t) return "—";
+  return t.length > max ? `${t.slice(0, max)}…` : t;
+}
+
 export function PreviousIslandsGallery({
+  onBackToIsland,
+  onBackToReflection,
   onReplay,
 }: {
+  onBackToIsland: () => void;
+  onBackToReflection: () => void;
   onReplay: () => void;
 }) {
-  const { publishedLocal, publishCurrent, refreshPublished } = useJourney();
+  const { selections, reflection } = useJourney();
   const [groupName, setGroupName] = useState("");
+  const [islands, setIslands] = useState<ApiIsland[]>([]);
+  const [loadState, setLoadState] = useState<"loading" | "ok" | "error">(
+    "loading",
+  );
+  const [loadMessage, setLoadMessage] = useState<string | null>(null);
+  const [publishing, setPublishing] = useState(false);
+  const [publishError, setPublishError] = useState<string | null>(null);
+  const [publishSuccess, setPublishSuccess] = useState(false);
+
+  const loadIslands = useCallback(async () => {
+    setLoadState("loading");
+    setLoadMessage(null);
+    try {
+      const res = await fetch("/api/published-islands", { method: "GET" });
+      const data = (await res.json()) as {
+        islands?: ApiIsland[];
+        error?: string;
+      };
+      if (!res.ok) {
+        setLoadState("error");
+        setLoadMessage(
+          data.error ?? "We couldn't load the list. Try refreshing the page.",
+        );
+        return;
+      }
+      setIslands(data.islands ?? []);
+      setLoadState("ok");
+    } catch {
+      setLoadState("error");
+      setLoadMessage("We couldn't load the list. Check your connection and try again.");
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadIslands();
+  }, [loadIslands]);
 
   const rows = useMemo(() => {
-    const local = publishedLocal.map((p) => {
-      const excerpt =
-        p.reflection.trim().length > 0
-          ? p.reflection.length > 180
-            ? `${p.reflection.slice(0, 180)}…`
-            : p.reflection
-          : "No reflection text saved.";
-      return {
-        id: p.id,
-        groupName: p.groupName,
-        dateISO: p.savedAt,
-        valueIds: p.selections.values,
-        textIds: p.selections.texts,
-        practiceIds: p.selections.practices,
-        reflectionExcerpt: excerpt,
-        source: "local" as const,
-      };
-    });
-    const seed = SAMPLE_ISLANDS.map((s) => ({ ...s, source: "seed" as const }));
-    return [...local, ...seed];
-  }, [publishedLocal]);
+    const fromApi = islands.map((r) => ({
+      id: r.id,
+      groupName: r.groupName,
+      dateISO: r.dateISO,
+      valueIds: r.valueIds,
+      textIds: r.textIds,
+      practiceIds: r.practiceIds,
+      reflectionExcerpt: excerptFromReflection(r.reflection),
+      source: "api" as const,
+    }));
+    const seed = SAMPLE_ISLANDS.map((s) => ({
+      id: s.id,
+      groupName: s.groupName,
+      dateISO: s.dateISO,
+      valueIds: s.valueIds,
+      textIds: s.textIds,
+      practiceIds: s.practiceIds,
+      reflectionExcerpt: s.reflectionExcerpt,
+      source: "seed" as const,
+    }));
+    return [...fromApi, ...seed];
+  }, [islands]);
+
+  const handlePublish = async () => {
+    setPublishError(null);
+    setPublishSuccess(false);
+    setPublishing(true);
+    try {
+      const res = await fetch("/api/published-islands", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          groupName: groupName.trim() || undefined,
+          selections,
+          reflection,
+        }),
+      });
+      const data = (await res.json()) as { error?: string };
+      if (!res.ok) {
+        setPublishError(
+          data.error ?? "We couldn't publish. Try again in a moment.",
+        );
+        return;
+      }
+      setGroupName("");
+      setPublishSuccess(true);
+      await loadIslands();
+      window.setTimeout(() => setPublishSuccess(false), 4000);
+    } catch {
+      setPublishError("We couldn't connect. Check your network and try again.");
+    } finally {
+      setPublishing(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
@@ -56,46 +145,99 @@ export function PreviousIslandsGallery({
         className="text-center"
       >
         <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          Published islands &amp; previous groups
+          Published islands
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-[var(--muted-foreground)]">
-          A small archive of what other groups carried—plus your own if you
-          publish locally (demo: saved in this browser).
+          Below is a shared list: groups can add their island so others can see
+          what they carried and why.
         </p>
+        <p className="mx-auto mt-3 max-w-xl text-sm text-[var(--muted-foreground)]">
+          You can go back to your island or reflection to make changes, then
+          return here to publish when you are ready.
+        </p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onBackToIsland}
+          >
+            Back to island
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onBackToReflection}
+          >
+            Back to reflection
+          </Button>
+        </div>
       </motion.div>
 
-      <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-[var(--border)] bg-[var(--card)]/50 p-5">
+      <div className="mx-auto mt-10 max-w-xl rounded-2xl border border-[var(--border)] bg-[var(--muted)]/30 p-5">
         <p className="text-sm font-medium text-[var(--foreground)]">
-          Publish this island (local demo)
+          Add your group to the list
         </p>
-        <p className="mt-1 text-xs text-[var(--muted-foreground)]">
-          Stored in <code className="rounded bg-[var(--input)] px-1">localStorage</code>{" "}
-          for prototyping—swap this hook for an API later.
+        <p className="mt-1 text-sm text-[var(--muted-foreground)]">
+          Optional: name your group. This saves your choices and reflection for
+          everyone on this site to read—like pinning your island to a public
+          board.
         </p>
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-stretch">
           <Input
             aria-label="Group or cohort name"
             placeholder="Group name (optional)"
             value={groupName}
             onChange={(e) => setGroupName(e.target.value)}
+            disabled={publishing}
           />
           <Button
             type="button"
-            onClick={() => {
-              publishCurrent(groupName);
-              setGroupName("");
-              refreshPublished();
-            }}
+            onClick={() => void handlePublish()}
+            disabled={publishing}
+            className="inline-flex shrink-0 items-center justify-center gap-2"
           >
-            Publish
+            {publishing ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                Publishing
+              </>
+            ) : (
+              "Publish"
+            )}
           </Button>
         </div>
+        {publishSuccess && (
+          <p
+            className="mt-3 text-sm font-medium text-[var(--accent)]"
+            role="status"
+          >
+            You’re on the list. Scroll down to see your island.
+          </p>
+        )}
+        {publishError && (
+          <p className="mt-3 text-sm text-red-600 dark:text-red-400" role="alert">
+            {publishError}
+          </p>
+        )}
       </div>
+
+      {loadState === "loading" && (
+        <p className="mt-8 flex items-center justify-center gap-2 text-sm text-[var(--muted-foreground)]">
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+          Loading archive…
+        </p>
+      )}
+
+      {loadState === "error" && loadMessage && (
+        <p className="mt-8 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-900 dark:text-amber-100">
+          {loadMessage}
+        </p>
+      )}
 
       <div className="mt-10 grid gap-5 md:grid-cols-2">
         {rows.map((row, i) => (
           <motion.div
-            key={row.id}
+            key={`${row.source}-${row.id}`}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04 }}
@@ -115,9 +257,14 @@ export function PreviousIslandsGallery({
                       day: "numeric",
                     })}
                   </span>
-                  {"source" in row && row.source === "seed" && (
+                  {row.source === "seed" && (
                     <span className="rounded-full bg-[var(--muted)]/50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
                       Sample
+                    </span>
+                  )}
+                  {row.source === "api" && (
+                    <span className="rounded-full bg-[var(--primary)]/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--primary)]">
+                      Published
                     </span>
                   )}
                 </div>

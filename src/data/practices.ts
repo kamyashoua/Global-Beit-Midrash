@@ -8,7 +8,7 @@ export const PRACTICES: SelectableItem[] = [
     title: "Gathering in synagogue",
     subtitle: "Prayer and presence in community",
     description:
-      "Showing up in shared space—whether weekly or occasionally—anchors Jewish life in voices, melodies, and faces you did not choose.",
+      "Showing up in shared space—whether weekly or occasionally—anchors Jewish life in shared voices, melodies, and relationships across generations.",
     prompt:
       "What is lost when prayer becomes only private—and what is gained when it becomes communal?",
     icon: "building-2",
@@ -29,7 +29,7 @@ export const PRACTICES: SelectableItem[] = [
     title: "Keeping kosher",
     subtitle: "Eating with intention",
     description:
-      "Food becomes ethics in miniature: boundaries, mindfulness, and discipline that show up three times a day.",
+      "Creating boundaries, mindfulness, and discipline in one of the most daily parts of life: what we eat and how we eat it.",
     prompt: "Is this practice mainly personal—or does it shape a wider Jewish culture?",
     icon: "utensils",
   },
@@ -49,7 +49,7 @@ export const PRACTICES: SelectableItem[] = [
     title: "Fasting",
     subtitle: "Discomfort as a teacher",
     description:
-      "Fasting interrupts autopilot. It can sharpen empathy, regret, and seriousness—if it is not performed emptily.",
+      "Fasting interrupts autopilot. It can sharpen empathy, regret, and seriousness.",
     prompt: "What can bodily discomfort teach that ideas alone cannot?",
     icon: "flame",
   },
@@ -59,7 +59,7 @@ export const PRACTICES: SelectableItem[] = [
     title: "Wearing a kippah",
     subtitle: "A visible reminder",
     description:
-      "A small garment can change posture—literally. It signals awareness, identity, and sometimes vulnerability in public space.",
+      "A small garment can change posture. It signals awareness, identity, and sometimes vulnerability in public space.",
     prompt: "What do visible markers do for a people—and for an individual?",
     icon: "circle-dot",
   },
@@ -69,8 +69,9 @@ export const PRACTICES: SelectableItem[] = [
     title: "Tefillin",
     subtitle: "Words bound to body",
     description:
-      "Ancient ritual technology: binding words to arm and head so belief is not only thought but worn.",
-    prompt: "What changes when faith is strapped to muscle and bone?",
+      "Ancient ritual technology: binding words to the arm and head so belief is not only thought but worn.",
+    prompt:
+      "How might this daily physical ritual shape a person's sense of responsibility and identity?",
     icon: "scroll",
   },
   {
@@ -79,7 +80,7 @@ export const PRACTICES: SelectableItem[] = [
     title: "Torah (reading or hearing it)",
     subtitle: "The scroll at the center",
     description:
-      "Whether you read Hebrew fluently or follow along in translation, Torah as public reading keeps a shared text from becoming a private hobby.",
+      "Whether you read Hebrew fluently or follow along in translation, Torah as public reading keeps a shared text well known from generation to generation.",
     prompt: "Who is responsible for keeping Torah literate across generations?",
     icon: "scroll-text",
   },

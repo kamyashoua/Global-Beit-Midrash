@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -30,12 +31,24 @@ export function MetaphorExplanation({
 }: Props) {
   const body = (
     <div className="space-y-6">
+      <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)]/50">
+        <Image
+          src="/journey-map-light.svg"
+          alt="Journey map visual with paths and island"
+          width={1200}
+          height={700}
+          className="h-auto w-full"
+          priority
+        />
+      </div>
       <div className="flex items-start gap-3 rounded-xl border border-[var(--border)] bg-[var(--muted)]/30 p-4">
         <Map className="mt-0.5 h-5 w-5 shrink-0 text-[var(--accent)]" aria-hidden />
         <p className="text-sm leading-relaxed text-[var(--muted-foreground)]">
-          The island is not a vacation fantasy. It is a metaphor for the Jewish
-          future: limited space, limited time, and the weight of choosing what
-          continues—and what does not.
+          As we move into the next stage of our lives (college, university,
+          adulthood, etc.), we are able to choose what we continue practicing
+          and what we let go of. Before we make this decision and discuss these
+          elements of Jewish life, we must understand their importance and why
+          they would or would not have a meaningful impact on our lives.
         </p>
       </div>
       <ul className="space-y-3">
@@ -50,7 +63,7 @@ export function MetaphorExplanation({
       </ul>
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
-          Reflection prompts
+          Opening reflection prompts
         </p>
         <ul className="mt-3 space-y-2">
           {METAPHOR_REFLECTION_PROMPTS.map((p) => (
@@ -77,11 +90,11 @@ export function MetaphorExplanation({
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 md:px-8">
         <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          The island is a metaphor
+          The island as metaphor and life transition
         </h2>
         <p className="mt-4 text-pretty text-lg text-[var(--muted-foreground)]">
-          Before you choose what to carry, read this slowly. The point is not a
-          perfect answer—it is a clearer question.
+          Before you choose what to carry, read this slowly. Think about more
+          than the island metaphor: think about your real next stage of life.
         </p>
         <div className="mt-10">{body}</div>
       </div>
@@ -99,7 +112,7 @@ export function MetaphorExplanation({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>The island is a metaphor</DialogTitle>
+          <DialogTitle>The island as metaphor and life transition</DialogTitle>
           <DialogDescription>
             A short map for how to read this experience.
           </DialogDescription>

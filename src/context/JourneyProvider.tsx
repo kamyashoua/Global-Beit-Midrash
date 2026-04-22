@@ -10,16 +10,9 @@ import React, {
   useState,
 } from "react";
 import type { RealmId } from "@/types/content";
-import {
-  clearJourney,
-  loadJourney,
-  loadPublished,
-  publishIsland,
-  saveJourney,
-  type StoredPublished,
-} from "@/lib/journey-storage";
+import { clearJourney, loadJourney, saveJourney } from "@/lib/journey-storage";
 import type { IslandPlacements, JourneyStage, Selections } from "@/types/journey";
-import { SELECTION_LIMITS } from "@/types/journey";
+import { SELECTION_LIMITS, clampIslandPoint, normalizePlacements } from "@/types/journey";
 
 type JourneyContextValue = {
   stage: JourneyStage;
@@ -30,15 +23,14 @@ type JourneyContextValue = {
   setReflection: (t: string) => void;
   placements: IslandPlacements;
   setPlacements: (p: IslandPlacements) => void;
-  /** Place an item on a slot index (0–7); swaps with occupant if needed */
-  assignSlot: (itemId: string, slotIndex: number) => void;
+  /** Place an item on the island at the given position (percent of drop area) */
+  placeItemAt: (itemId: string, x: number, y: number) => void;
+  /** Remove item from island and send back to tray */
+  unassignItem: (itemId: string) => void;
   limitMessage: string | null;
   clearLimitMessage: () => void;
   canAdvanceFromRealm: (realm: RealmId) => boolean;
   resetJourney: () => void;
-  publishCurrent: (groupName: string) => void;
-  publishedLocal: StoredPublished[];
-  refreshPublished: () => void;
 };
 
 const JourneyContext = createContext<JourneyContextValue | null>(null);
@@ -49,27 +41,13 @@ const defaultSelections: Selections = {
   practices: [],
 };
 
-function initialPlacements(sel: Selections): IslandPlacements {
-  const order = [...sel.values, ...sel.texts, ...sel.practices];
-  const next: IslandPlacements = {};
-  order.forEach((id, i) => {
-    next[id] = i;
-  });
-  return next;
-}
-
 export function JourneyProvider({ children }: { children: React.ReactNode }) {
   const [stage, setStageState] = useState<JourneyStage>("intro");
   const [selections, setSelections] = useState<Selections>(defaultSelections);
   const [reflection, setReflection] = useState("");
   const [placements, setPlacementsState] = useState<IslandPlacements>({});
   const [limitMessage, setLimitMessage] = useState<string | null>(null);
-  const [publishedLocal, setPublishedLocal] = useState<StoredPublished[]>([]);
   const [hydrated, setHydrated] = useState(false);
-
-  const refreshPublished = useCallback(() => {
-    setPublishedLocal(loadPublished());
-  }, []);
 
   useEffect(() => {
     const saved = loadJourney();
@@ -78,12 +56,11 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       if (saved?.stage) setStageState(saved.stage);
       if (typeof saved?.reflection === "string") setReflection(saved.reflection);
       if (saved?.placements && Object.keys(saved.placements).length > 0) {
-        setPlacementsState(saved.placements);
+        setPlacementsState(normalizePlacements(saved.placements));
       }
-      refreshPublished();
       setHydrated(true);
     });
-  }, [refreshPublished]);
+  }, []);
 
   useEffect(() => {
     if (!hydrated) return;
@@ -134,21 +111,18 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
     setPlacementsState(p);
   }, []);
 
-  const assignSlot = useCallback((itemId: string, slotIndex: number) => {
+  const placeItemAt = useCallback((itemId: string, x: number, y: number) => {
+    setPlacementsState((prev) => ({
+      ...prev,
+      [itemId]: clampIslandPoint({ x, y }),
+    }));
+  }, []);
+
+  const unassignItem = useCallback((itemId: string) => {
     setPlacementsState((prev) => {
+      if (prev[itemId] === undefined) return prev;
       const next = { ...prev };
-      const fromSlot = next[itemId];
-      const occupant = Object.keys(next).find(
-        (k) => k !== itemId && next[k] === slotIndex,
-      );
-      if (occupant !== undefined) {
-        if (fromSlot !== undefined) {
-          next[occupant] = fromSlot;
-        } else {
-          delete next[occupant];
-        }
-      }
-      next[itemId] = slotIndex;
+      delete next[itemId];
       return next;
     });
   }, []);
@@ -162,38 +136,6 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
     setLimitMessage(null);
   }, []);
 
-  const publishCurrent = useCallback(
-    (groupName: string) => {
-      const entry: StoredPublished = {
-        id: `local-${Date.now()}`,
-        savedAt: new Date().toISOString(),
-        groupName: groupName.trim() || "Unnamed group",
-        selections: { ...selections },
-        reflection,
-      };
-      publishIsland(entry);
-      refreshPublished();
-    },
-    [reflection, selections, refreshPublished],
-  );
-
-  // When leaving realms toward island, ensure placements exist
-  useEffect(() => {
-    if (stage !== "island" && stage !== "reflection" && stage !== "gallery")
-      return;
-    const total =
-      selections.values.length +
-      selections.texts.length +
-      selections.practices.length;
-    if (total < 8) return;
-    startTransition(() => {
-      setPlacementsState((prev) => {
-        if (Object.keys(prev).length >= 8) return prev;
-        return { ...initialPlacements(selections), ...prev };
-      });
-    });
-  }, [stage, selections]);
-
   const value = useMemo(
     () => ({
       stage,
@@ -204,14 +146,12 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       setReflection,
       placements,
       setPlacements,
-      assignSlot,
+      placeItemAt,
+      unassignItem,
       limitMessage,
       clearLimitMessage,
       canAdvanceFromRealm,
       resetJourney,
-      publishCurrent,
-      publishedLocal,
-      refreshPublished,
     }),
     [
       stage,
@@ -221,14 +161,12 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       reflection,
       placements,
       setPlacements,
-      assignSlot,
+      placeItemAt,
+      unassignItem,
       limitMessage,
       clearLimitMessage,
       canAdvanceFromRealm,
       resetJourney,
-      publishCurrent,
-      publishedLocal,
-      refreshPublished,
     ],
   );
 

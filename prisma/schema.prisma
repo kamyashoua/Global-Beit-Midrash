@@ -1,0 +1,21 @@
+// Prisma schema — published islands shared across all visitors.
+// Set DATABASE_URL in `.env` (see `.env.example`). Use Postgres in production (e.g. Neon).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model PublishedIsland {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  groupName   String
+  valueIds    Json
+  textIds     Json
+  practiceIds Json
+  reflection  String
+}

@@ -45,6 +45,18 @@ export function RealmScreen({
 }: Props) {
   const max = SELECTION_LIMITS[realm];
   const prompts = REALM_PROMPTS[realm];
+  const instruction =
+    realm === "values"
+      ? "Select exactly 3 values to continue."
+      : realm === "texts"
+        ? "Select exactly 2 texts to continue."
+        : "Select exactly 3 practices to continue.";
+  const hintText =
+    realm === "values"
+      ? "Choose values you believe should remain central for Jewish continuity. The reflection prompts below are for thought and discussion, not a separate written assignment."
+      : realm === "texts"
+        ? "Pick texts that you believe should keep shaping behavior and identity in future Jewish life. The prompts are discussion guides."
+        : "Pick practices that are most likely to keep Jewish life active and recognizable across generations. The prompts are there to help discussion.";
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
@@ -55,13 +67,32 @@ export function RealmScreen({
         Icon={Icon}
         accentClass={accentClass}
       />
+      <div className="mx-auto mt-8 max-w-3xl space-y-3">
+        <p className="rounded-xl border border-[var(--primary)]/30 bg-[var(--primary)]/10 px-4 py-3 text-sm font-semibold text-[var(--foreground)]">
+          {instruction}
+        </p>
+        <p className="text-sm text-[var(--muted-foreground)]">
+          Quick directions: select cards by clicking them. Selected cards will
+          glow and show a checkmark. You can deselect anytime before continuing.
+        </p>
+        <details className="rounded-xl border border-[var(--border)] bg-[var(--card)]/45 px-4 py-3 text-sm text-[var(--muted-foreground)]">
+          <summary className="cursor-pointer list-none font-medium text-[var(--foreground)]">
+            Hint
+          </summary>
+          <p className="mt-2">{hintText}</p>
+        </details>
+      </div>
 
       <motion.div
-        className="mx-auto mt-10 max-w-2xl space-y-3"
+        className="mx-auto mt-8 max-w-2xl space-y-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.15 }}
       >
+        <p className="text-xs font-medium italic text-[var(--muted-foreground)]">
+          These reflection questions are prompts for your group conversation.
+          You do not need to submit separate answers here.
+        </p>
         {prompts.map((p) => (
           <p
             key={p}
@@ -127,9 +158,7 @@ export function RealmScreen({
       </div>
       {!canAdvance && (
         <p className="mt-3 text-center text-sm text-[var(--muted-foreground)]">
-          {realm === "values" && `Select exactly ${max} values to continue.`}
-          {realm === "texts" && `Select exactly ${max} texts to continue.`}
-          {realm === "practices" && `Select exactly ${max} practices to continue.`}
+          {instruction}
         </p>
       )}
     </div>

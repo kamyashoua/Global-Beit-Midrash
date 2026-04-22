@@ -51,14 +51,19 @@ export function JourneyExperience() {
 
   return (
     <PageShell realm={shellRealm}>
-      <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[#070b14]/75 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[#f4f8ff]/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-8">
           <p className="font-display text-base font-semibold tracking-tight text-[var(--foreground)] md:text-lg">
             The Island We Carry
           </p>
           <ResetJourneyButton />
         </div>
-        {stage !== "intro" && <ProgressTracker stage={stage} />}
+        {stage !== "intro" && (
+          <ProgressTracker
+            stage={stage}
+            onPostRealmNavigate={setStage}
+          />
+        )}
       </header>
 
       <AnimatePresence mode="wait">
@@ -104,7 +109,7 @@ export function JourneyExperience() {
               realm="values"
               title="The Values Realm"
               eyebrow="Realm I of III"
-              description="Values are the compass. They shape what a community rewards, protects, and refuses to normalize."
+              description="Values are the compass. They shape what a community rewards, protects, and refuses to compromise."
               Icon={Gem}
               accentClass="text-[#8ab4ff]"
               items={VALUES}
@@ -122,7 +127,7 @@ export function JourneyExperience() {
               realm="texts"
               title="The Texts Realm"
               eyebrow="Realm II of III"
-              description="Texts are compressed arguments. They carry law, story, ethics, and disagreement—often all at once."
+              description="Texts help us carry core ideas into real life choices. Select the teachings you believe should continue shaping Jewish life."
               Icon={ScrollText}
               accentClass="text-[#e8c77b]"
               items={TEXTS}
@@ -140,7 +145,7 @@ export function JourneyExperience() {
               realm="practices"
               title="The Practices Realm"
               eyebrow="Realm III of III"
-              description="Practices are Judaism in muscle memory: meals, calendars, language, ritual, and shared time."
+              description="Practices are how values become lived habits across generations. Choose the practices that should continue in daily Jewish life."
               Icon={Flame}
               accentClass="text-[#5eead4]"
               items={PRACTICES}
@@ -171,6 +176,8 @@ export function JourneyExperience() {
 
           {stage === "gallery" && (
             <PreviousIslandsGallery
+              onBackToIsland={() => setStage("island")}
+              onBackToReflection={() => setStage("reflection")}
               onReplay={() => {
                 resetJourney();
                 setDialogueIndex(0);

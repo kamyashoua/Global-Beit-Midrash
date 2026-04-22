@@ -13,30 +13,30 @@ type Props = {
 
 const realmBg: Record<NonNullable<Props["realm"]>, string> = {
   neutral:
-    "from-[#070b14] via-[#0c1428] to-[#0a1620]",
+    "from-[#f4f8ff] via-[#eaf3ff] to-[#eef8ff]",
   values:
-    "from-[#070b18] via-[#0f1c3a] to-[#0a1a28]",
+    "from-[#f3f7ff] via-[#e0ecff] to-[#e8f5ff]",
   texts:
-    "from-[#120f0a] via-[#1a1610] to-[#0f1816]",
+    "from-[#f9f7f1] via-[#f6f2e7] to-[#eff7f3]",
   practices:
-    "from-[#071412] via-[#0f2420] to-[#0a1a18]",
+    "from-[#edf8f6] via-[#e3f7f3] to-[#edf7ff]",
 };
 
 export function PageShell({ children, className, realm = "neutral" }: Props) {
   return (
     <div
       className={cn(
-        "relative min-h-screen overflow-x-hidden bg-[#070b14] text-[var(--foreground)]",
+        "relative min-h-screen overflow-x-hidden bg-[#f4f8ff] text-[var(--foreground)]",
         className,
       )}
     >
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(201,162,39,0.12),transparent_55%),radial-gradient(ellipse_at_bottom,rgba(94,234,212,0.08),transparent_50%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(54,120,212,0.16),transparent_58%),radial-gradient(ellipse_at_bottom,rgba(46,169,154,0.12),transparent_52%)]"
         aria-hidden
       />
       <motion.div
         className={cn(
-          "pointer-events-none absolute inset-0 bg-gradient-to-b opacity-90",
+          "pointer-events-none absolute inset-0 bg-gradient-to-b opacity-95",
           realmBg[realm],
         )}
         initial={{ opacity: 0 }}

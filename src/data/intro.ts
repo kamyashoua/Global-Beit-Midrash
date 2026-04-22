@@ -7,7 +7,7 @@ export const INTRO_DIALOGUE: { id: string; text: string }[] = [
   },
   {
     id: "line-2",
-    text: "Imagine a new island — a new Jewish future — where only some things can be brought with you.",
+    text: "Imagine a new island — and imagine your next stage too: college, a gap year, a new city — where only some things are carried forward.",
   },
   {
     id: "line-3",
@@ -16,4 +16,4 @@ export const INTRO_DIALOGUE: { id: string; text: string }[] = [
 ];
 
 export const GUIDE_INTRO =
-  "You have been asked to help shape a future Jewish world. You can only bring a limited set of values, texts, and practices. The island is a metaphor: your choices show what you believe is essential—and what you are willing to let go. There is no single right answer. Every answer reveals priorities.";
+  "You have been asked to help shape a future Jewish world. You can only bring a limited set of values, texts, and practices. The island is a metaphor for Jewish continuity and for your own next stage of life: your choices show what you believe is essential—and what you are willing to let go.";

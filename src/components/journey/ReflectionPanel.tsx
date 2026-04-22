@@ -33,11 +33,11 @@ export function ReflectionPanel({
           Reflection
         </p>
         <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          Say it in your own words
+          Explain your decisions so others understand your motivations
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-[var(--muted-foreground)]">
-          There is no rubric. The goal is clarity: what you chose, what you
-          refused, and what you are still unsure about.
+          This is a group reflection and discussion space. Explain what your
+          group chose, what you left behind, and why.
         </p>
       </motion.div>
 
@@ -46,17 +46,17 @@ export function ReflectionPanel({
           htmlFor="reflection-main"
           className="block text-sm font-medium text-[var(--foreground)]"
         >
-          Your reasoning
+          Group reasoning
         </label>
         <Textarea
           id="reflection-main"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Start anywhere. You might describe the story your island tells, what you protected, what you mourned leaving behind, or what surprised you."
+          placeholder="Write this as a group explanation: what you prioritized, what you debated, and what you decided to carry forward."
           className="min-h-[200px] resize-y"
         />
         <p className="text-xs text-[var(--muted-foreground)]">
-          Tip: write for five minutes without editing. You can refine later.
+          Tip: discuss as a group first, then capture your shared reasoning.
         </p>
       </div>
 

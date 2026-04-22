@@ -1,10 +1,10 @@
 /** Reusable reflection copy for modals, panels, and discussion boxes */
 
 export const METAPHOR_BULLETS: string[] = [
-  "The island represents the Jewish future we are building together—not a fantasy escape, but a direction.",
   "What you take to the island symbolizes what you choose to preserve, practice, and pass on.",
   "What you leave behind raises uncomfortable questions about limits, loss, and responsibility.",
-  "This experience is meant to spark conversation about continuity, identity, values, and communal obligation.",
+  "This experience is meant to spark conversation about continuity, identity, values, and communal obligation in Jewish life and in your next stage of life.",
+  "As you move into college, university, a gap year, or adulthood, you decide what practices and priorities continue with you.",
 ];
 
 export const METAPHOR_REFLECTION_PROMPTS: string[] = [
