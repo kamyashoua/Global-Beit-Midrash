@@ -1,0 +1,208 @@
+{
+  "meta": {
+    "title": "La isla que llevamos | Beit Medrash global",
+    "description": "Una reflexión interactiva sobre la continuidad judía: valores, textos y prácticas que llevarías al futuro."
+  },
+  "nav": { "title": "La isla que llevamos" },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "switch": "Idioma",
+    "aria": "Cambiar el idioma del sitio. Actual: {{current}}"
+  },
+  "common": { "back": "Atrás", "continue": "Continuar" },
+  "progress": {
+    "heading": "Progreso del recorrido",
+    "goTo": "Ir a {{name}}",
+    "steps": {
+      "intro": "Bienvenida",
+      "metaphor": "Metáfora",
+      "values": "Valores",
+      "texts": "Textos",
+      "practices": "Prácticas",
+      "island": "Isla",
+      "reflection": "Reflexión",
+      "gallery": "Archivo"
+    }
+  },
+  "reset": {
+    "label": "Empezar de nuevo",
+    "confirm": "¿Empezar de nuevo? Se borrarán tus elecciones guardadas y la reflexión en este dispositivo."
+  },
+  "intro": {
+    "badge": "Beit Medrash interactivo",
+    "h1": "La isla que llevamos",
+    "continue": "Continuar",
+    "beginJourney": "Comenzar el recorrido",
+    "mapAlt": "Ilustración de mapa del recorrido",
+    "howItWorks": "Cómo funciona",
+    "guide": "Os han pedido ayudar a imaginar un futuro judío. Solo podéis traer un número limitado de valores, textos y prácticas. La isla metafórica habla de continuidad judía y de vuestra próxima etapa: las elecciones muestran qué consideráis esencial y qué estáis dispuestas/os a dejar ir.",
+    "dialogue": {
+      "line-1": "No comienzas el judaísmo desde cero. Lo sostienes y lo haces avanzar.",
+      "line-2": "Imagina una isla nueva —y imagina tu próxima etapa: la universidad, un año lejos, otra ciudad— donde solo parte de lo vivido se traslada adelante.",
+      "line-3": "¿Qué tiene que sobrevivir? ¿Qué no puede perderse? ¿Qué eliges llevar?"
+    }
+  },
+  "metaphor": {
+    "title": "La isla como metáfora y transición de vida",
+    "lead": "Antes de elegir qué llevar, lee con calma. Piensa en algo más que la metáfora de la isla: en tu propia transición, la que vives de verdad.",
+    "mapAlt": "Mapa del recorrido con caminos e isla",
+    "explainer": "A medida que entramos en una nueva etapa (universidad, la vida adulta, etc.) podemos elegir qué seguir practicando y qué soltar. Antes de decidir y conversar sobre estos ámbitos de la vida judía, conviene entender su importancia y su impacto real en nuestras vidas.",
+    "dialogTitle": "La isla como metáfora y transición de vida",
+    "dialogDescription": "Una guía breve para leer esta experiencia.",
+    "openReflection": "Preguntas iniciales de reflexión",
+    "enterRealm": "Entrar al primer reino",
+    "bullets": [
+      "Lo que llevas a la isla simboliza lo que eliges conservar, practicar y transmitir.",
+      "Lo que dejas plantea preguntas incómodas sobre límites, pérdida y responsabilidad.",
+      "Esta experiencia busca abrir conversación sobre continuidad, identidad, valores y obligación comunitaria en la vida judía y en tu próxima etapa.",
+      "En la transición a la universidad, un año sabático o la vida adulta, quien decide qué prácticas y prioridades te siguen eres tú."
+    ],
+    "reflectionPrompts": [
+      "¿Qué necesita la vida judía para seguir viva y con sentido?",
+      "¿Qué partes del judaísmo son significativas para ti a nivel personal?",
+      "¿Qué partes sientes necesarias no solo para ti, sino para toda la comunidad?",
+      "Si algo desaparece de la vida comunitaria, ¿puede reemplazarse o se pierde lo esencial?"
+    ]
+  },
+  "journey": {
+    "values": {
+      "title": "El reino de los valores",
+      "eyebrow": "Reino I de III",
+      "description": "Los valores son la brújula: definen qué premia, protege o no negocia una comunidad."
+    },
+    "texts": {
+      "title": "El reino de los textos",
+      "eyebrow": "Reino II de III",
+      "description": "Los textos ayudan a llevar ideas centrales a decisiones reales. Elige enseñanzas que crees que deben seguir dando forma a la vida judía."
+    },
+    "practices": {
+      "title": "El reino de las prácticas",
+      "eyebrow": "Reino III de III",
+      "description": "Las prácticas son cómo los valores se vuelven hábitos entre generaciones. Elige las que deberían continuar en la vida judía cotidiana."
+    },
+    "selectInstruction": {
+      "values": "Selecciona exactamente 3 valores para continuar.",
+      "texts": "Selecciona exactamente 2 textos para continuar.",
+      "practices": "Selecciona exactamente 3 prácticas para continuar."
+    },
+    "quickDirections": "Indicación rápida: elige cartas haciendo clic. Las seleccionadas se iluminan y muestran una marca. Puedes anular la selección en cualquier momento antes de avanzar.",
+    "hintTitle": "Pista",
+    "hint": {
+      "values": "Elige valores que consideres esenciales para la continuidad judía. Las preguntas de abajo son para pensar y conversar en grupo, no una tarea escrita aparte.",
+      "texts": "Elige textos que creas que deben seguir dando forma a la conducta y a la identidad en el futuro judío. Las preguntas guían el diálogo.",
+      "practices": "Elige prácticas con más probabilidad de mantener viva y reconocible la vida judía en el tiempo. Las preguntas ayudan a la conversación."
+    },
+    "promptCaption": "Estas preguntas apoyan la conversación en grupo. No hace falta entregar respuestas por separado.",
+    "limit": {
+      "values": "Solo puedes llevar tres valores. Quita uno para elegir otro.",
+      "texts": "Solo puedes llevar dos textos. Quita uno para elegir otro.",
+      "practices": "Solo puedes llevar tres prácticas. Quita una para elegir otra."
+    },
+    "selectionLabel": {
+      "values": "Valores que llevarás",
+      "texts": "Textos que llevarás",
+      "practices": "Prácticas que llevarás"
+    },
+    "ofSelected": "{{current}} de {{max}} elegidos",
+    "ready": "Listo",
+    "viewArchive": "Ver archivo y publicar"
+  },
+  "selectable": { "reflectPrefix": "Reflexiona:" },
+  "island": {
+    "eyebrow": "Montaje final",
+    "title": "Este es el futuro que eligieron llevar",
+    "lead": "Arrastra tus ocho elecciones hacia la isla. Al colocarlas, cada una se vuelve una señal en el suelo. Puedes situarlas donde quieras y volver a moverlas.",
+    "dropAreaLabel": "Isla: suelta las señales en la arena",
+    "yourIsland": "Tu isla",
+    "tip": "Pista: coloca lo más importante donde primero mires, o reúne todo el grupo: tú diseñas el mapa.",
+    "placedCount": "{{count}} / 8 señales en la isla",
+    "category": { "values": "Valor", "texts": "Texto", "practices": "Práctica" },
+    "moveItem": "Mover {{title}}",
+    "continueReflection": "Continuar a la reflexión",
+    "placeAll": "Coloca las 8 señales en la isla para continuar."
+  },
+  "reflection": {
+    "eyebrow": "Reflexión",
+    "title": "Explicar las decisiones para que otras personas entiendan el porqué",
+    "lead": "Espacio de reflexión y diálogo en grupo. Cuenta qué eligieron, qué dejaron y por qué.",
+    "label": "Razonamiento del grupo",
+    "placeholder": "Escriban juntos: qué priorizaron, qué debatieron y qué deciden llevar adelante.",
+    "tip": "Pista: conversen en grupo y luego plasmen un texto compartido.",
+    "optionalTitle": "Preguntas opcionales"
+  },
+  "discussion": {
+    "title": "Para todo el grupo",
+    "lead": "Si conversan con otras personas, prueben preguntas como estas. Están para afinar el pensamiento, no para forzar acuerdo."
+  },
+  "npc": { "guide": "Guía" },
+  "gallery": {
+    "title": "Islas publicadas",
+    "lead1": "Aquí hay una lista compartida: cada grupo puede añadir su isla para que otras vean qué llevó y por qué.",
+    "lead2": "Pueden volver a su isla o a la reflexión para cambios y regresar aquí cuando quieran publicar.",
+    "backIsland": "Volver a la isla",
+    "backReflection": "Volver a la reflexión",
+    "addTitle": "Añadid vuestro grupo a la lista",
+    "addDescription": "Opcional: nombrad al grupo. Esto guarda vuestras elecciones y la reflexión para quienes visiten el sitio, como fijar la isla en un tablón común.",
+    "groupNameLabel": "Nombre del grupo o cohorte",
+    "groupPlaceholder": "Nombre del grupo (opcional)",
+    "publish": "Publicar",
+    "publishing": "Publicando",
+    "success": "Quedáis en la lista. Buscad abajo para ver vuestra isla.",
+    "cardTitle": "Qué llevaron",
+    "valuesLabel": "Valores:",
+    "textsLabel": "Textos:",
+    "practicesLabel": "Prácticas:",
+    "sample": "Ejemplo",
+    "published": "Publicado",
+    "loading": "Cargando archivo…",
+    "replay": "Volver a hacer el recorrido",
+    "emptyExcerpt": "—"
+  },
+  "errors": {
+    "ARCHIVE_UNAVAILABLE": "El archivo no está disponible por ahora. Prueba otra vez en unos momentos.",
+    "LOAD_LIST_FAILED": "No pudimos cargar la lista. Intenta recargar la página.",
+    "LOAD_LIST_NETWORK": "No pudimos cargar la lista. Comprueba la conexión e inténtalo de nuevo.",
+    "BAD_REQUEST": "Algo salió mal. Recarga la página e inténtalo de nuevo.",
+    "VALIDATION": "Revisa que las elecciones estén completas e inténtalo de nuevo.",
+    "JOURNEY_INCOMPLETE": "Termina el recorrido completo (3 valores, 2 textos y 3 prácticas) antes de publicar.",
+    "SAVE_FAILED": "No pudimos guardar la isla. Prueba otra vez en unos momentos.",
+    "PUBLISH_FAILED": "No pudimos publicar. Prueba otra vez en unos momentos.",
+    "PUBLISH_NETWORK": "No hubo conexión. Comprueba la red e inténtalo de nuevo."
+  },
+  "prompts": {
+    "realm": {
+      "values": [
+        "¿Qué valores sostienen no solo a las personas, sino a un pueblo entero?",
+        "¿Qué valores deberían guiar el crecimiento de la vida judía?",
+        "¿Qué valores sería más peligroso perder?"
+      ],
+      "texts": [
+        "¿Qué enseñanzas merecen seguir hacia el futuro?",
+        "¿Qué texto capta, para ti, una idea judía esencial?",
+        "¿Qué texto da forma no solo a la creencia, sino al comportamiento?"
+      ],
+      "practices": [
+        "¿Qué prácticas mantienen el judaísmo como vida vivida y no como idea abstracta?",
+        "¿Qué prácticas crean identidad entre generaciones?",
+        "¿Qué prácticas sostienen a las comunidades en la vida real?"
+      ]
+    },
+    "reflection": {
+      "optional": [
+        "¿Por qué estas elecciones se sintieron lo más esencial?",
+        "¿Qué elección costó más decidir?",
+        "¿Qué dejaste atrás que aun así te importa?",
+        "¿Cómo cambiaría un futuro judío si tu comunidad eligiera otra cosa?",
+        "¿Tus elecciones son personales, comunitarias o ambas?"
+      ]
+    },
+    "communal": [
+      "Si todos los judíos dejaran esto atrás, ¿qué cambiaría?",
+      "¿Podría la vida judía seguir teniendo sentido sin esto?",
+      "¿Hay un sustituto, o se perdería algo esencial?",
+      "¿Tus elecciones son universales, particulares, o ambas?",
+      "¿Cómo se vuelve real un valor en la vida cotidiana?"
+    ]
+  }
+}

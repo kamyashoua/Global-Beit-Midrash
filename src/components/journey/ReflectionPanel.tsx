@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { PenLine } from "lucide-react";
+import { useLanguage } from "@/context/LanguageProvider";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { OPTIONAL_TEXTAREA_PROMPTS } from "@/data/reflection-prompts";
 import { DiscussionPromptBox } from "@/components/journey/DiscussionPromptBox";
 
 type Props = {
@@ -20,6 +20,9 @@ export function ReflectionPanel({
   onBack,
   onContinue,
 }: Props) {
+  const { t, tList } = useLanguage();
+  const optionals = tList("prompts.reflection.optional");
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 md:px-8 md:py-14">
       <motion.div
@@ -30,45 +33,44 @@ export function ReflectionPanel({
       >
         <p className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card)]/40 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--muted-foreground)]">
           <PenLine className="h-3.5 w-3.5 text-[var(--accent)]" aria-hidden />
-          Reflection
+          {t("reflection.eyebrow")}
         </p>
-        <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          Explain your decisions so others understand your motivations
+        <h2 className="mt-6 font-display text-3xl font-semibold tracking-tight [overflow-wrap:anywhere] md:text-4xl">
+          {t("reflection.title")}
         </h2>
-        <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-[var(--muted-foreground)]">
-          This is a group reflection and discussion space. Explain what your
-          group chose, what you left behind, and why.
+        <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-[var(--muted-foreground)] [overflow-wrap:anywhere] md:text-lg">
+          {t("reflection.lead")}
         </p>
       </motion.div>
 
       <div className="mt-10 space-y-4">
         <label
           htmlFor="reflection-main"
-          className="block text-sm font-medium text-[var(--foreground)]"
+          className="block text-sm font-medium text-[var(--foreground)] [overflow-wrap:anywhere]"
         >
-          Group reasoning
+          {t("reflection.label")}
         </label>
         <Textarea
           id="reflection-main"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="Write this as a group explanation: what you prioritized, what you debated, and what you decided to carry forward."
+          placeholder={t("reflection.placeholder")}
           className="min-h-[200px] resize-y"
         />
-        <p className="text-xs text-[var(--muted-foreground)]">
-          Tip: discuss as a group first, then capture your shared reasoning.
+        <p className="text-xs text-[var(--muted-foreground)] [overflow-wrap:anywhere]">
+          {t("reflection.tip")}
         </p>
       </div>
 
       <div className="mt-10">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
-          Optional prompts
+          {t("reflection.optionalTitle")}
         </p>
         <ul className="mt-3 space-y-2">
-          {OPTIONAL_TEXTAREA_PROMPTS.map((p) => (
+          {optionals.map((p) => (
             <li
               key={p}
-              className="rounded-lg border border-[var(--border)] bg-[var(--card)]/40 px-3 py-2 text-sm text-[var(--muted-foreground)]"
+              className="rounded-lg border border-[var(--border)] bg-[var(--card)]/40 px-3 py-2 text-sm text-[var(--muted-foreground)] [overflow-wrap:anywhere]"
             >
               {p}
             </li>
@@ -82,10 +84,10 @@ export function ReflectionPanel({
 
       <div className="mt-12 flex flex-col gap-4 border-t border-[var(--border)] pt-8 sm:flex-row sm:items-center sm:justify-between">
         <Button type="button" variant="secondary" onClick={onBack}>
-          Back
+          {t("common.back")}
         </Button>
-        <Button type="button" onClick={onContinue}>
-          View archive and publish
+        <Button type="button" onClick={onContinue} className="[overflow-wrap:anywhere] sm:max-w-none">
+          {t("journey.viewArchive")}
         </Button>
       </div>
     </div>

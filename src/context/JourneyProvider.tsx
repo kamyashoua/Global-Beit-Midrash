@@ -27,7 +27,8 @@ type JourneyContextValue = {
   placeItemAt: (itemId: string, x: number, y: number) => void;
   /** Remove item from island and send back to tray */
   unassignItem: (itemId: string) => void;
-  limitMessage: string | null;
+  /** When a realm selection limit is hit, which realm (translate with journey.limit.{realm}) */
+  limitRealm: RealmId | null;
   clearLimitMessage: () => void;
   canAdvanceFromRealm: (realm: RealmId) => boolean;
   resetJourney: () => void;
@@ -46,7 +47,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
   const [selections, setSelections] = useState<Selections>(defaultSelections);
   const [reflection, setReflection] = useState("");
   const [placements, setPlacementsState] = useState<IslandPlacements>({});
-  const [limitMessage, setLimitMessage] = useState<string | null>(null);
+  const [limitRealm, setLimitRealm] = useState<RealmId | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -71,13 +72,13 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
     setStageState(s);
   }, []);
 
-  const clearLimitMessage = useCallback(() => setLimitMessage(null), []);
+  const clearLimitMessage = useCallback(() => setLimitRealm(null), []);
 
   useEffect(() => {
-    if (!limitMessage) return;
-    const t = window.setTimeout(() => setLimitMessage(null), 4200);
+    if (!limitRealm) return;
+    const t = window.setTimeout(() => setLimitRealm(null), 4200);
     return () => window.clearTimeout(t);
-  }, [limitMessage]);
+  }, [limitRealm]);
 
   const toggleSelect = useCallback((realm: RealmId, id: string) => {
     setSelections((prev) => {
@@ -87,13 +88,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
         return { ...prev, [realm]: list.filter((x) => x !== id) };
       }
       if (list.length >= limit) {
-        setLimitMessage(
-          realm === "values"
-            ? "You can carry only three values. Remove one to choose another."
-            : realm === "texts"
-              ? "You can carry only two texts. Remove one to choose another."
-              : "You can carry only three practices. Remove one to choose another.",
-        );
+        setLimitRealm(realm);
         return prev;
       }
       return { ...prev, [realm]: [...list, id] };
@@ -133,7 +128,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
     setReflection("");
     setPlacementsState({});
     setStageState("intro");
-    setLimitMessage(null);
+    setLimitRealm(null);
   }, []);
 
   const value = useMemo(
@@ -148,7 +143,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       setPlacements,
       placeItemAt,
       unassignItem,
-      limitMessage,
+      limitRealm,
       clearLimitMessage,
       canAdvanceFromRealm,
       resetJourney,
@@ -163,7 +158,7 @@ export function JourneyProvider({ children }: { children: React.ReactNode }) {
       setPlacements,
       placeItemAt,
       unassignItem,
-      limitMessage,
+      limitRealm,
       clearLimitMessage,
       canAdvanceFromRealm,
       resetJourney,

@@ -11,16 +11,16 @@ export type JourneyStage =
   | "reflection"
   | "gallery";
 
-/** Ordered journey steps for navigation and progress UI */
-export const JOURNEY_STEPS: { stage: JourneyStage; label: string }[] = [
-  { stage: "intro", label: "Welcome" },
-  { stage: "metaphor", label: "Metaphor" },
-  { stage: "realm-values", label: "Values" },
-  { stage: "realm-texts", label: "Texts" },
-  { stage: "realm-practices", label: "Practices" },
-  { stage: "island", label: "Island" },
-  { stage: "reflection", label: "Reflection" },
-  { stage: "gallery", label: "Archive" },
+/** Ordered journey steps — `labelKey` is looked up in locales (e.g. progress.steps.welcome) */
+export const JOURNEY_STEPS: { stage: JourneyStage; labelKey: string }[] = [
+  { stage: "intro", labelKey: "progress.steps.intro" },
+  { stage: "metaphor", labelKey: "progress.steps.metaphor" },
+  { stage: "realm-values", labelKey: "progress.steps.values" },
+  { stage: "realm-texts", labelKey: "progress.steps.texts" },
+  { stage: "realm-practices", labelKey: "progress.steps.practices" },
+  { stage: "island", labelKey: "progress.steps.island" },
+  { stage: "reflection", labelKey: "progress.steps.reflection" },
+  { stage: "gallery", labelKey: "progress.steps.gallery" },
 ];
 
 /**

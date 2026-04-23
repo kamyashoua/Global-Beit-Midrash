@@ -1,0 +1,169 @@
+{
+  "values": {
+    "talmud-torah": {
+      "title": "Talmud Torá",
+      "subtitle": "El aprendizaje como camino de por vida",
+      "description": "La tradición judía trata el estudio como trabajo sagrado: no solo hechos, sino hábitos de atención, discusión y humildad. Así las ideas se mantienen vivas a lo largo de los siglos.",
+      "prompt": "Si en la vida judía se debilitara un estudio serio, ¿qué otras cosas desaparecerían casi sin darnos cuenta?"
+    },
+    "shavat-vayinfash": {
+      "title": "Shavat vayináfash",
+      "subtitle": "Un descanso que renueva el alma",
+      "description": "No es flojera: es el modo de volver a estar entero. En un mundo acelerado, el judaísmo pide ritmos que protegen la dignidad humana.",
+      "prompt": "¿Qué se quiebra en nosotros cuando nunca paramos, y qué podría reparar un descanso al estilo del Shabat?"
+    },
+    "tikkun-olam": {
+      "title": "Tikún olam",
+      "subtitle": "Reparar lo que está roto",
+      "description": "A menudo traducido como “reparar el mundo”, empuja la responsabilidad más allá del yo: qué le debemos a quienes nos rodean, a los extraños y al planeta compartido.",
+      "prompt": "¿Dónde ves la reparación como tarea judía, no un eslogan, sino una práctica cotidiana?"
+    },
+    "yirat-shemayim": {
+      "title": "Yirat Shemayim",
+      "subtitle": "Asombro y seriedad moral",
+      "description": "A veces se traduce como “temor de los cielos”: puede significar vivir con humildad frente a algo más grande, de modo que las elecciones tengan peso.",
+      "prompt": "¿Puede una comunidad mantenerse honesta sin sentirse responsable ante algo más amplio que la opinión?"
+    },
+    "kehillah": {
+      "title": "Kehilá",
+      "subtitle": "Comunidad que sostiene a las personas",
+      "description": "El judaísmo no es solo fe privada. Se vive con otros: al celebrar, al llorar, al aprender, al presentarse aunque sea incómodo.",
+      "prompt": "¿Qué le debe una comunidad judía sana a sus miembros, y qué le deben los miembros a la comunidad?"
+    },
+    "self-preservation": {
+      "title": "Autopreservación",
+      "subtitle": "Seguridad y supervivencia",
+      "description": "La historia lo vuelve práctico: las comunidades deben cuidarse para perdurar. Puede chocar con otros valores y obliga a un debate franco sobre límites y deberes.",
+      "prompt": "¿Cuándo la autopreservación se vuelve encierro, o cuándo la apertura se vuelve riesgo?"
+    },
+    "rebuke": {
+      "title": "Tojajá (reproche)",
+      "subtitle": "Importar lo suficiente para corregir",
+      "description": "La ética judía incluye a veces señalar el daño con respeto, con cuidado y con miras a reparar, no a humillar.",
+      "prompt": "¿Cómo puede el desacuerdo fortalecer a la comunidad en vez de dividirla?"
+    },
+    "arievet": {
+      "title": "Arévut",
+      "subtitle": "Responsabilidad mutua",
+      "description": "Nos hacemos cargo unos de otros como pueblo judío: deberes reales de cuidado, honradeza y protección, no un eslogan vago.",
+      "prompt": "¿Qué exige, en el día a día, la idea de que somos responsables unos de otros como pueblo judío?"
+    },
+    "kavod-habriyot": {
+      "title": "Kavod habriot",
+      "subtitle": "Honrar a cada persona",
+      "description": "La dignidad humana no es un extra. Te empuja a reparar en quiénes pasan desapercibidos, a quiénes no escuchan o a quiénes empujan al margen.",
+      "prompt": "¿Qué costumbres hacen real la dignidad, más allá de un cartel de buenas intenciones?"
+    },
+    "ahavat-israel": {
+      "title": "Ahavat Yisrael",
+      "subtitle": "Vínculo con Israel",
+      "description": "Apunta a la conexión con Israel como lugar y como parte de la continuidad judía: preguntas sobre pertenencia, diversidad y lealtad.",
+      "prompt": "¿Hace falta Israel para conectar a los judíos en la diáspora?"
+    }
+  },
+  "texts": {
+    "text-deuteronomy-open-hand": {
+      "title": "Cuidar a quienes son vulnerables",
+      "subtitle": "Deuteronomio 15:7",
+      "quote": "No endurezcas tu corazón ni cierres tu mano frente a tu hermano menesteroso.",
+      "description": "Contexto: el bienestar no es solo un logro personal —viene acompañado de una obligación terca de abrir mano y corazón quien pasa apuros.",
+      "prompt": "Si la sociedad dejara de sentir esto como presión moral, ¿en qué clase de personas nos convertiríamos?"
+    },
+    "text-pirkei-mighty": {
+      "title": "Dominio de uno mismo",
+      "subtitle": "Pirqé Avot 4:1",
+      "quote": "¿Quién es fuerte? El que somete su inclinación al mal. Más vale quien manda en su ánimo que quien toma una ciudad.",
+      "description": "Contexto: la fuerza real no es dominar a otros, sino gobernar ira, miedo, ego e impulso en el peor momento.",
+      "prompt": "¿Dónde el autocontrol es asunto de comunidad, y no solo privado?"
+    },
+    "text-kiddushin-study-action": {
+      "title": "Un estudio que conduce a la acción",
+      "subtitle": "Kidushín 40b",
+      "quote": "En un debate entre estudio y acción, los sabios sostuvieron que el estudio es mayor, porque el estudio conduce a la acción.",
+      "description": "Contexto: aprender importa porque transforma el comportamiento. Se miden las ideas por lo que generan en la vida concreta.",
+      "prompt": "¿En qué crees aún solo porque no lo has vivido de verdad?"
+    },
+    "text-bava-metzia-water": {
+      "title": "La ética de la supervivencia",
+      "subtitle": "Bava Mesiá 62a",
+      "quote": "Si dos viajan por el desierto y el agua alcanza solo para uno, el dueño bebe: su vida pasa primero.",
+      "description": "Contexto: una enseñanza dura sobre límites. Obliga a preguntar por responsabilidad, triage y qué exige la ley en situaciones imposibles.",
+      "prompt": "Cuando compartir choca con sobrevivir, ¿cómo debe decidir la comunidad, y quién debe ser oído?"
+    },
+    "text-eruvin-these-and-these": {
+      "title": "Desacuerdo sagrado y humildad",
+      "subtitle": "Eruvín 13b (relato)",
+      "quote": "En un debate entre la casa de Shamai y la de Hillel, se favoreció a Hillel porque aprendían primero el parecer de Shamai y luego el suyo.",
+      "description": "Contexto: el desacuerdo puede ser santo, y la humildad implica sostener tu postura y honrar la dignidad de la otra.",
+      "prompt": "¿Cómo sería discutir como quienes creen que la verdad es más vasta que ganar un debate?"
+    }
+  },
+  "practices": {
+    "synagogue": {
+      "title": "Reunirse en la sinagoga",
+      "subtitle": "Oración y presencia comunitaria",
+      "description": "Acudir a un espacio compartido, sea cada semana o a veces, ancla la vida judía en voces, melodías y vínculos entre generaciones.",
+      "prompt": "¿Qué se pierde si la plegaria es solo personal, y qué se gana si es comunitaria?"
+    },
+    "shabbat-dinner": {
+      "title": "Cena de Shabat",
+      "subtitle": "Ritmo, comida y bendición",
+      "description": "Una pausa semanal que puede ser arte: velas, pan, vino, conversación. Enseña atención y hace distinto al tiempo.",
+      "prompt": "¿Qué futuro necesita un ritmo semanal protegido?"
+    },
+    "kosher": {
+      "title": "Guardar kashrut",
+      "subtitle": "Comer con intención",
+      "description": "Crear límites, consciencia y disciplina en la parte más cotidiana de la vida: qué comemos y cómo comemos.",
+      "prompt": "¿Es una práctica sobre todo personal, o modela una cultura judía más amplia?"
+    },
+    "holidays": {
+      "title": "Celebrar las fiestas",
+      "subtitle": "Un calendario de memoria y gozo",
+      "description": "Las fiestas vuelven historia tiempo vivido: relatos, chistes, canciones y discusiones que los niños escuchan y heredan.",
+      "prompt": "¿Qué recuerdos desaparecerían si el calendario desapareciera?"
+    },
+    "fasting": {
+      "title": "Ayuno",
+      "subtitle": "El malestar como maestro",
+      "description": "Interrumpe el piloto automático. Puede agudar empatía, arrepentimiento y seriedad interior.",
+      "prompt": "¿Qué puede enseñar el cuerpo en el malestar que la idea, sola, no basta a decir?"
+    },
+    "kippah": {
+      "title": "Usar kipá",
+      "subtitle": "Un recordatorio visible",
+      "description": "Una prenda pequeña puede cambiar la postura: señala consciencia, identidad y a veces vulnerabilidad en espacio público.",
+      "prompt": "¿Qué hacen los signos visibles para un pueblo, y para la persona que los lleva?"
+    },
+    "tefillin": {
+      "title": "Tefilín",
+      "subtitle": "Palabras atadas al cuerpo",
+      "description": "Tecnología ritual antigua: fijar palabras al brazo y a la frente, para que la fe no viva solo en el pensamiento sino en el cuerpo.",
+      "prompt": "¿Cómo podría modelar alguien, día a día, un ritual físico de ese tipo?"
+    },
+    "torah-reading": {
+      "title": "Torá (leer o escucharla)",
+      "subtitle": "El rollo al centro",
+      "description": "Aunque leas hebreo o sigas con traducción, la Torá pública mantiene un texto compartido de generación en generación.",
+      "prompt": "¿A quién le toca sostener la alfabetización torá de generación en generación?"
+    },
+    "hebrew": {
+      "title": "Aprender hebreo",
+      "subtitle": "La lengua como herencia",
+      "description": "El hebreo conecta a personas a través de fronteras y siglos. Aun con saber parcial, cambia el sentido de lo “nuestro” frente a lo extraño.",
+      "prompt": "¿Qué se gana, y qué riesgo hay, si una lengua sagrada se vuelve más difundida?"
+    },
+    "tzedakah": {
+      "title": "Tzedaká",
+      "subtitle": "Justicia expresada en dar",
+      "description": "Más cerca de la justicia esperada que de un favor opcional. Entrena la mano para alinearse con la conciencia.",
+      "prompt": "¿Cuánto debería ser el dar privado, y cuánto, comunitario?"
+    },
+    "daily-prayer": {
+      "title": "Plegaria diaria",
+      "subtitle": "Palabras fijas, regreso frecuente",
+      "description": "La liturgia diaria puede sonar repetitiva, hasta notar la repetición como oficio: gratitud, confesión, alabanza y súplica tejiendo el tiempo ordinario.",
+      "prompt": "¿Puede un futuro seguir judío sin plegaria hablada regular?"
+    }
+  }
+}

@@ -37,7 +37,10 @@ export async function GET() {
   } catch (e) {
     console.error("[published-islands GET]", e);
     return NextResponse.json(
-      { error: "The archive is temporarily unavailable. Try again in a moment." },
+      {
+        code: "ARCHIVE_UNAVAILABLE",
+        error: "The archive is temporarily unavailable. Try again in a moment.",
+      },
       { status: 503 },
     );
   }
@@ -50,7 +53,10 @@ export async function POST(request: Request) {
     json = await request.json();
   } catch {
     return NextResponse.json(
-      { error: "Something went wrong. Refresh the page and try again." },
+      {
+        code: "BAD_REQUEST",
+        error: "Something went wrong. Refresh the page and try again.",
+      },
       { status: 400 },
     );
   }
@@ -58,7 +64,10 @@ export async function POST(request: Request) {
   const parsed = publishBodySchema.safeParse(json);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: "Check that your choices are complete, then try again." },
+      {
+        code: "VALIDATION",
+        error: "Check that your choices are complete, then try again.",
+      },
       { status: 400 },
     );
   }
@@ -72,6 +81,7 @@ export async function POST(request: Request) {
   ) {
     return NextResponse.json(
       {
+        code: "JOURNEY_INCOMPLETE",
         error:
           "Finish the full journey (3 values, 2 texts, 3 practices) before publishing.",
       },
@@ -97,7 +107,10 @@ export async function POST(request: Request) {
   } catch (e) {
     console.error("[published-islands POST]", e);
     return NextResponse.json(
-      { error: "We couldn't save your island. Try again in a moment." },
+      {
+        code: "SAVE_FAILED",
+        error: "We couldn't save your island. Try again in a moment.",
+      },
       { status: 503 },
     );
   }

@@ -1,10 +1,12 @@
 "use client";
 
 import { RotateCcw } from "lucide-react";
+import { useLanguage } from "@/context/LanguageProvider";
 import { Button } from "@/components/ui/button";
 import { useJourney } from "@/context/JourneyProvider";
 
 export function ResetJourneyButton() {
+  const { t } = useLanguage();
   const { resetJourney } = useJourney();
 
   return (
@@ -12,20 +14,15 @@ export function ResetJourneyButton() {
       type="button"
       variant="ghost"
       size="sm"
-      className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+      className="shrink-0 text-[var(--muted-foreground)] hover:text-[var(--foreground)] [overflow-wrap:anywhere]"
       onClick={() => {
-        if (
-          typeof window !== "undefined" &&
-          window.confirm(
-            "Start over? Your local selections and reflection will be cleared.",
-          )
-        ) {
+        if (typeof window !== "undefined" && window.confirm(t("reset.confirm"))) {
           resetJourney();
         }
       }}
     >
       <RotateCcw className="h-4 w-4" aria-hidden />
-      Start over
+      {t("reset.label")}
     </Button>
   );
 }

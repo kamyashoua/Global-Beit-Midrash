@@ -1,10 +1,13 @@
 import { JourneyExperience } from "@/components/journey/JourneyExperience";
+import { LanguageProvider } from "@/context/LanguageProvider";
 import { JourneyProvider } from "@/context/JourneyProvider";
 
 export default function Home() {
   return (
-    <JourneyProvider>
-      <JourneyExperience />
-    </JourneyProvider>
+    <LanguageProvider>
+      <JourneyProvider>
+        <JourneyExperience />
+      </JourneyProvider>
+    </LanguageProvider>
   );
 }

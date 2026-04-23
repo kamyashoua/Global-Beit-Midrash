@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLanguage } from "@/context/LanguageProvider";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export function SelectionCounter({ current, max, label }: Props) {
+  const { t } = useLanguage();
   const complete = current === max;
   return (
     <div
@@ -23,17 +25,17 @@ export function SelectionCounter({ current, max, label }: Props) {
       aria-live="polite"
       aria-atomic="true"
     >
-      <span className="text-sm font-medium text-[var(--foreground)]">
+      <span className="min-w-0 text-sm font-medium text-[var(--foreground)] [overflow-wrap:anywhere]">
         {label}
       </span>
       <div className="flex items-center gap-2">
         <span
           className={cn(
-            "text-sm tabular-nums",
+            "text-sm tabular-nums [overflow-wrap:normal]",
             complete ? "text-[var(--primary)]" : "text-[var(--muted-foreground)]",
           )}
         >
-          {current} of {max} selected
+          {t("journey.ofSelected", { current, max })}
         </span>
         {complete && (
           <motion.span
@@ -41,7 +43,7 @@ export function SelectionCounter({ current, max, label }: Props) {
             animate={{ scale: 1, opacity: 1 }}
             className="rounded-full bg-[var(--primary)]/20 px-2 py-0.5 text-xs font-semibold text-[var(--primary)]"
           >
-            Ready
+            {t("journey.ready")}
           </motion.span>
         )}
       </div>

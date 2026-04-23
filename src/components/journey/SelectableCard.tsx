@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
 import type { SelectableItem } from "@/types/content";
+import { useLanguage } from "@/context/LanguageProvider";
+import { useItemCopy } from "@/hooks/useItemCopy";
 import { cn } from "@/lib/utils";
 import { ItemIcon } from "@/lib/item-icons";
 
@@ -39,6 +41,8 @@ export function SelectableCard({
   realm,
   index,
 }: Props) {
+  const { t } = useLanguage();
+  const copy = useItemCopy(item);
   const rs = realmStyles[realm];
 
   return (
@@ -53,7 +57,7 @@ export function SelectableCard({
         onClick={onToggle}
         aria-pressed={selected}
         className={cn(
-          "group relative flex h-full w-full flex-col rounded-2xl border text-left transition-all duration-300",
+          "group relative flex h-full w-full min-w-0 flex-col rounded-2xl border text-left transition-all duration-300",
           "border-[var(--border)] bg-[var(--card)]/55 backdrop-blur-md",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ring-offset)]",
           "hover:-translate-y-0.5 hover:shadow-lg",
@@ -66,7 +70,7 @@ export function SelectableCard({
             ),
         )}
       >
-        <span className="flex items-start justify-between gap-3 p-5 md:p-6">
+        <span className="flex min-w-0 items-start justify-between gap-3 p-5 md:p-6">
           <span className="flex min-w-0 items-start gap-3">
             <span
               className={cn(
@@ -78,11 +82,11 @@ export function SelectableCard({
               <ItemIcon name={item.icon} className="h-5 w-5" />
             </span>
             <span className="min-w-0">
-              <span className="block font-display text-lg font-semibold leading-snug text-[var(--foreground)]">
-                {item.title}
+              <span className="block font-display text-lg font-semibold leading-snug text-[var(--foreground)] [overflow-wrap:anywhere]">
+                {copy.title}
               </span>
-              <span className="mt-1 block text-xs font-medium uppercase tracking-wide text-[var(--muted-foreground)]">
-                {item.subtitle}
+              <span className="mt-1 block text-xs font-medium uppercase tracking-wide text-[var(--muted-foreground)] [overflow-wrap:anywhere]">
+                {copy.subtitle}
               </span>
             </span>
           </span>
@@ -99,26 +103,26 @@ export function SelectableCard({
           </span>
         </span>
 
-        {item.quote && (
-          <blockquote className="mx-5 mb-2 rounded-xl border border-[var(--border)] bg-[var(--input)]/55 px-4 py-3 text-sm leading-relaxed text-[var(--foreground)] md:mx-6">
-            “{item.quote}”
+        {copy.quote && (
+          <blockquote className="mx-5 mb-2 rounded-xl border border-[var(--border)] bg-[var(--input)]/55 px-4 py-3 text-sm leading-relaxed text-[var(--foreground)] [overflow-wrap:anywhere] md:mx-6">
+            &ldquo;{copy.quote}&rdquo;
           </blockquote>
         )}
         <span
           className={cn(
-            "px-5 pb-2 text-sm leading-relaxed text-[var(--muted-foreground)] md:px-6",
-            item.quote && "italic",
+            "px-5 pb-2 text-sm leading-relaxed text-[var(--muted-foreground)] [overflow-wrap:anywhere] md:px-6",
+            copy.quote && "italic",
           )}
         >
-          {item.description}
+          {copy.description}
         </span>
 
-        {item.prompt && (
-          <p className="mt-auto border-t border-[var(--border)]/80 px-5 py-4 text-xs leading-relaxed text-[var(--muted-foreground)] md:px-6">
+        {copy.prompt && (
+          <p className="mt-auto border-t border-[var(--border)]/80 px-5 py-4 text-xs leading-relaxed text-[var(--muted-foreground)] [overflow-wrap:anywhere] md:px-6">
             <span className="font-semibold text-[var(--accent)]/90">
-              Reflect:{" "}
+              {t("selectable.reflectPrefix")}{" "}
             </span>
-            {item.prompt}
+            {copy.prompt}
           </p>
         )}
       </button>

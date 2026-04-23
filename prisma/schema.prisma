@@ -1,12 +1,14 @@
 // Prisma schema — published islands shared across all visitors.
-// Set DATABASE_URL in `.env` (see `.env.example`). Use Postgres in production (e.g. Neon).
+// On Vercel, use a hosted Postgres (e.g. Neon). See `.env.example`.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
+  // Use a hosted Postgres connection string (Neon: use the direct / non-pooling URL
+  // for both local dev and Vercel so `migrate deploy` works in CI/build).
   url      = env("DATABASE_URL")
 }
 

@@ -4,13 +4,13 @@ import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import type { SelectableItem } from "@/types/content";
 import type { RealmId } from "@/types/content";
-import { REALM_PROMPTS } from "@/data/reflection-prompts";
-import { SELECTION_LIMITS } from "@/types/journey";
+import { useLanguage } from "@/context/LanguageProvider";
 import { RealmHeader } from "@/components/journey/RealmHeader";
 import { SelectableCard } from "@/components/journey/SelectableCard";
 import { SelectionCounter } from "@/components/journey/SelectionCounter";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { SELECTION_LIMITS } from "@/types/journey";
 
 type Props = {
   realm: RealmId;
@@ -24,7 +24,7 @@ type Props = {
   onBack: () => void;
   onNext: () => void;
   canAdvance: boolean;
-  limitMessage: string | null;
+  limitRealm: RealmId | null;
   accentClass?: string;
 };
 
@@ -40,23 +40,14 @@ export function RealmScreen({
   onBack,
   onNext,
   canAdvance,
-  limitMessage,
+  limitRealm,
   accentClass,
 }: Props) {
+  const { t, tList } = useLanguage();
   const max = SELECTION_LIMITS[realm];
-  const prompts = REALM_PROMPTS[realm];
-  const instruction =
-    realm === "values"
-      ? "Select exactly 3 values to continue."
-      : realm === "texts"
-        ? "Select exactly 2 texts to continue."
-        : "Select exactly 3 practices to continue.";
-  const hintText =
-    realm === "values"
-      ? "Choose values you believe should remain central for Jewish continuity. The reflection prompts below are for thought and discussion, not a separate written assignment."
-      : realm === "texts"
-        ? "Pick texts that you believe should keep shaping behavior and identity in future Jewish life. The prompts are discussion guides."
-        : "Pick practices that are most likely to keep Jewish life active and recognizable across generations. The prompts are there to help discussion.";
+  const prompts = tList(`prompts.realm.${realm}`);
+  const instruction = t(`journey.selectInstruction.${realm}`);
+  const hintText = t(`journey.hint.${realm}`);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-14">
@@ -72,12 +63,11 @@ export function RealmScreen({
           {instruction}
         </p>
         <p className="text-sm text-[var(--muted-foreground)]">
-          Quick directions: select cards by clicking them. Selected cards will
-          glow and show a checkmark. You can deselect anytime before continuing.
+          {t("journey.quickDirections")}
         </p>
         <details className="rounded-xl border border-[var(--border)] bg-[var(--card)]/45 px-4 py-3 text-sm text-[var(--muted-foreground)]">
           <summary className="cursor-pointer list-none font-medium text-[var(--foreground)]">
-            Hint
+            {t("journey.hintTitle")}
           </summary>
           <p className="mt-2">{hintText}</p>
         </details>
@@ -90,8 +80,7 @@ export function RealmScreen({
         transition={{ delay: 0.15 }}
       >
         <p className="text-xs font-medium italic text-[var(--muted-foreground)]">
-          These reflection questions are prompts for your group conversation.
-          You do not need to submit separate answers here.
+          {t("journey.promptCaption")}
         </p>
         {prompts.map((p) => (
           <p
@@ -107,20 +96,14 @@ export function RealmScreen({
         <SelectionCounter
           current={selectedIds.length}
           max={max}
-          label={
-            realm === "values"
-              ? "Values you will carry"
-              : realm === "texts"
-                ? "Texts you will carry"
-                : "Practices you will carry"
-          }
+          label={t(`journey.selectionLabel.${realm}`)}
         />
-        {limitMessage && (
+        {limitRealm === realm && (
           <p
             className="mt-3 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100"
             role="status"
           >
-            {limitMessage}
+            {t(`journey.limit.${realm}`)}
           </p>
         )}
       </div>
@@ -145,7 +128,7 @@ export function RealmScreen({
 
       <div className="mt-12 flex flex-col gap-4 border-t border-[var(--border)] pt-8 sm:flex-row sm:items-center sm:justify-between">
         <Button type="button" variant="secondary" onClick={onBack}>
-          Back
+          {t("common.back")}
         </Button>
         <Button
           type="button"
@@ -153,7 +136,7 @@ export function RealmScreen({
           disabled={!canAdvance}
           aria-disabled={!canAdvance}
         >
-          Continue
+          {t("common.continue")}
         </Button>
       </div>
       {!canAdvance && (

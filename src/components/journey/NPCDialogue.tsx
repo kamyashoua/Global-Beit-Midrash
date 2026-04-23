@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Quote } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from "@/context/LanguageProvider";
 import { cn } from "@/lib/utils";
 
 type Line = { id: string; text: string };
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export function NPCDialogue({ lines, activeIndex, className }: Props) {
+  const { t } = useLanguage();
   const line = lines[activeIndex];
   return (
     <Card
@@ -31,7 +33,7 @@ export function NPCDialogue({ lines, activeIndex, className }: Props) {
         </div>
         <div className="min-w-0 flex-1">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
-            Guide
+            {t("npc.guide")}
           </p>
           <AnimatePresence mode="wait">
             {line && (

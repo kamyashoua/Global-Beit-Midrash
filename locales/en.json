@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "title": "The Island We Carry | Global Beit Midrash",
+    "description": "An interactive reflection on Jewish continuity—values, texts, and practices you would carry into the future."
+  },
+  "nav": {
+    "title": "The Island We Carry"
+  },
+  "language": {
+    "en": "English",
+    "es": "Español",
+    "switch": "Language",
+    "aria": "Change site language. Current: {{current}}"
+  },
+  "common": {
+    "back": "Back",
+    "continue": "Continue"
+  },
+  "progress": {
+    "heading": "Journey progress",
+    "goTo": "Go to {{name}}",
+    "steps": {
+      "intro": "Welcome",
+      "metaphor": "Metaphor",
+      "values": "Values",
+      "texts": "Texts",
+      "practices": "Practices",
+      "island": "Island",
+      "reflection": "Reflection",
+      "gallery": "Archive"
+    }
+  },
+  "reset": {
+    "label": "Start over",
+    "confirm": "Start over? Your local selections and reflection will be cleared."
+  },
+  "intro": {
+    "badge": "Interactive Beit Midrash",
+    "h1": "The Island We Carry",
+    "continue": "Continue",
+    "beginJourney": "Begin the journey",
+    "mapAlt": "Journey-themed map illustration",
+    "howItWorks": "How it works"
+  },
+  "metaphor": {
+    "title": "The island as metaphor and life transition",
+    "lead": "Before you choose what to carry, read this slowly. Think about more than the island metaphor: think about your real next stage of life.",
+    "mapAlt": "Journey map visual with paths and island",
+    "explainer": "As we move into the next stage of our lives (college, university, adulthood, etc.), we are able to choose what we continue practicing and what we let go of. Before we make this decision and discuss these elements of Jewish life, we must understand their importance and why they would or would not have a meaningful impact on our lives.",
+    "dialogTitle": "The island as metaphor and life transition",
+    "dialogDescription": "A short map for how to read this experience.",
+    "openReflection": "Opening reflection prompts",
+    "enterRealm": "Enter the first realm"
+  },
+  "journey": {
+    "values": {
+      "title": "The Values Realm",
+      "eyebrow": "Realm I of III",
+      "description": "Values are the compass. They shape what a community rewards, protects, and refuses to compromise."
+    },
+    "texts": {
+      "title": "The Texts Realm",
+      "eyebrow": "Realm II of III",
+      "description": "Texts help us carry core ideas into real life choices. Select the teachings you believe should continue shaping Jewish life."
+    },
+    "practices": {
+      "title": "The Practices Realm",
+      "eyebrow": "Realm III of III",
+      "description": "Practices are how values become lived habits across generations. Choose the practices that should continue in daily Jewish life."
+    },
+    "selectInstruction": {
+      "values": "Select exactly 3 values to continue.",
+      "texts": "Select exactly 2 texts to continue.",
+      "practices": "Select exactly 3 practices to continue."
+    },
+    "quickDirections": "Quick directions: select cards by clicking them. Selected cards will glow and show a checkmark. You can deselect anytime before continuing.",
+    "hintTitle": "Hint",
+    "hint": {
+      "values": "Choose values you believe should remain central for Jewish continuity. The reflection prompts below are for thought and discussion, not a separate written assignment.",
+      "texts": "Pick texts that you believe should keep shaping behavior and identity in future Jewish life. The prompts are discussion guides.",
+      "practices": "Pick practices that are most likely to keep Jewish life active and recognizable across generations. The prompts are there to help discussion."
+    },
+    "promptCaption": "These reflection questions are prompts for your group conversation. You do not need to submit separate answers here.",
+    "limit": {
+      "values": "You can carry only three values. Remove one to choose another.",
+      "texts": "You can carry only two texts. Remove one to choose another.",
+      "practices": "You can carry only three practices. Remove one to choose another."
+    },
+    "selectionLabel": {
+      "values": "Values you will carry",
+      "texts": "Texts you will carry",
+      "practices": "Practices you will carry"
+    },
+    "ofSelected": "{{current}} of {{max}} selected",
+    "ready": "Ready",
+    "viewArchive": "View archive and publish"
+  },
+  "selectable": {
+    "reflectPrefix": "Reflect:"
+  },
+  "island": {
+    "eyebrow": "Final assembly",
+    "title": "This is the future you chose to carry",
+    "lead": "Drag your eight choices onto the island. When placed, each one becomes a standing sign on the island. You can place them anywhere on the sand and drag again to move them.",
+    "dropAreaLabel": "Island — drop signs anywhere on the sand",
+    "yourIsland": "Your island",
+    "tip": "Tip: place what matters most where your eye lands first, or keep it clustered — the layout is yours.",
+    "placedCount": "{{count}} / 8 signs placed on the island",
+    "category": {
+      "values": "Value",
+      "texts": "Text",
+      "practices": "Practice"
+    },
+    "moveItem": "Move {{title}}",
+    "continueReflection": "Continue to reflection",
+    "placeAll": "Place all 8 signs on the island to continue."
+  },
+  "reflection": {
+    "eyebrow": "Reflection",
+    "title": "Explain your decisions so others understand your motivations",
+    "lead": "This is a group reflection and discussion space. Explain what your group chose, what you left behind, and why.",
+    "label": "Group reasoning",
+    "placeholder": "Write this as a group explanation: what you prioritized, what you debated, and what you decided to carry forward.",
+    "tip": "Tip: discuss as a group first, then capture your shared reasoning.",
+    "optionalTitle": "Optional prompts"
+  },
+  "discussion": {
+    "title": "For the whole group",
+    "lead": "If you discuss this with others, try questions like these. They are meant to sharpen thinking—not to force agreement."
+  },
+  "npc": {
+    "guide": "Guide"
+  },
+  "gallery": {
+    "title": "Published islands",
+    "lead1": "Below is a shared list: groups can add their island so others can see what they carried and why.",
+    "lead2": "You can go back to your island or reflection to make changes, then return here to publish when you are ready.",
+    "backIsland": "Back to island",
+    "backReflection": "Back to reflection",
+    "addTitle": "Add your group to the list",
+    "addDescription": "Optional: name your group. This saves your choices and reflection for everyone on this site to read—like pinning your island to a public board.",
+    "groupNameLabel": "Group or cohort name",
+    "groupPlaceholder": "Group name (optional)",
+    "publish": "Publish",
+    "publishing": "Publishing",
+    "success": "You’re on the list. Scroll down to see your island.",
+    "cardTitle": "What they carried",
+    "valuesLabel": "Values:",
+    "textsLabel": "Texts:",
+    "practicesLabel": "Practices:",
+    "sample": "Sample",
+    "published": "Published",
+    "loading": "Loading archive…",
+    "replay": "Replay the journey",
+    "emptyExcerpt": "—"
+  },
+  "errors": {
+    "ARCHIVE_UNAVAILABLE": "The archive is temporarily unavailable. Try again in a moment.",
+    "LOAD_LIST_FAILED": "We couldn't load the list. Try refreshing the page.",
+    "LOAD_LIST_NETWORK": "We couldn't load the list. Check your connection and try again.",
+    "BAD_REQUEST": "Something went wrong. Refresh the page and try again.",
+    "VALIDATION": "Check that your choices are complete, then try again.",
+    "JOURNEY_INCOMPLETE": "Finish the full journey (3 values, 2 texts, 3 practices) before publishing.",
+    "SAVE_FAILED": "We couldn't save your island. Try again in a moment.",
+    "PUBLISH_FAILED": "We couldn't publish. Try again in a moment.",
+    "PUBLISH_NETWORK": "We couldn't connect. Check your network and try again."
+  }
+}

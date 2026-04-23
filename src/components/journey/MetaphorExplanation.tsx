@@ -11,14 +11,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  METAPHOR_BULLETS,
-  METAPHOR_REFLECTION_PROMPTS,
-} from "@/data/reflection-prompts";
+import { useLanguage } from "@/context/LanguageProvider";
 import { Map } from "lucide-react";
 
 type Props = {
-  /** When used as the full metaphor stage, show primary CTA */
   variant?: "dialog-trigger" | "full";
   onContinue?: () => void;
   trigger?: ReactNode;
@@ -29,33 +25,33 @@ export function MetaphorExplanation({
   onContinue,
   trigger,
 }: Props) {
+  const { t, tList } = useLanguage();
+  const bullets = tList("metaphor.bullets");
+  const extraPrompts = tList("metaphor.reflectionPrompts");
+
   const body = (
     <div className="space-y-6">
       <div className="overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--card)]/50">
         <Image
           src="/journey-map-light.svg"
-          alt="Journey map visual with paths and island"
+          alt={t("metaphor.mapAlt")}
           width={1200}
           height={700}
           className="h-auto w-full"
           priority
         />
       </div>
-      <div className="flex items-start gap-3 rounded-xl border border-[var(--border)] bg-[var(--muted)]/30 p-4">
+      <div className="flex min-w-0 items-start gap-3 rounded-xl border border-[var(--border)] bg-[var(--muted)]/30 p-4">
         <Map className="mt-0.5 h-5 w-5 shrink-0 text-[var(--accent)]" aria-hidden />
-        <p className="text-sm leading-relaxed text-[var(--muted-foreground)]">
-          As we move into the next stage of our lives (college, university,
-          adulthood, etc.), we are able to choose what we continue practicing
-          and what we let go of. Before we make this decision and discuss these
-          elements of Jewish life, we must understand their importance and why
-          they would or would not have a meaningful impact on our lives.
+        <p className="min-w-0 text-sm leading-relaxed text-[var(--muted-foreground)] [overflow-wrap:anywhere]">
+          {t("metaphor.explainer")}
         </p>
       </div>
       <ul className="space-y-3">
-        {METAPHOR_BULLETS.map((b) => (
+        {bullets.map((b) => (
           <li
             key={b}
-            className="relative pl-6 text-sm leading-relaxed text-[var(--foreground)] before:absolute before:left-0 before:top-2.5 before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--primary)]"
+            className="relative pl-6 text-sm leading-relaxed text-[var(--foreground)] [overflow-wrap:anywhere] before:absolute before:left-0 before:top-2.5 before:h-1.5 before:w-1.5 before:rounded-full before:bg-[var(--primary)]"
           >
             {b}
           </li>
@@ -63,13 +59,13 @@ export function MetaphorExplanation({
       </ul>
       <div>
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
-          Opening reflection prompts
+          {t("metaphor.openReflection")}
         </p>
         <ul className="mt-3 space-y-2">
-          {METAPHOR_REFLECTION_PROMPTS.map((p) => (
+          {extraPrompts.map((p) => (
             <li
               key={p}
-              className="rounded-lg bg-[var(--input)]/80 px-3 py-2 text-sm text-[var(--muted-foreground)]"
+              className="rounded-lg bg-[var(--input)]/80 px-3 py-2 text-sm text-[var(--muted-foreground)] [overflow-wrap:anywhere]"
             >
               {p}
             </li>
@@ -79,7 +75,7 @@ export function MetaphorExplanation({
       {variant === "full" && onContinue && (
         <div className="flex justify-end pt-2">
           <Button type="button" size="lg" onClick={onContinue}>
-            Enter the first realm
+            {t("metaphor.enterRealm")}
           </Button>
         </div>
       )}
@@ -89,12 +85,11 @@ export function MetaphorExplanation({
   if (variant === "full") {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 md:px-8">
-        <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
-          The island as metaphor and life transition
+        <h2 className="font-display text-3xl font-semibold tracking-tight [overflow-wrap:anywhere] md:text-4xl">
+          {t("metaphor.title")}
         </h2>
-        <p className="mt-4 text-pretty text-lg text-[var(--muted-foreground)]">
-          Before you choose what to carry, read this slowly. Think about more
-          than the island metaphor: think about your real next stage of life.
+        <p className="mt-4 text-pretty text-lg text-[var(--muted-foreground)] [overflow-wrap:anywhere]">
+          {t("metaphor.lead")}
         </p>
         <div className="mt-10">{body}</div>
       </div>
@@ -106,16 +101,14 @@ export function MetaphorExplanation({
       <DialogTrigger asChild>
         {trigger ?? (
           <Button variant="secondary" type="button">
-            How it works
+            {t("intro.howItWorks")}
           </Button>
         )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>The island as metaphor and life transition</DialogTitle>
-          <DialogDescription>
-            A short map for how to read this experience.
-          </DialogDescription>
+          <DialogTitle>{t("metaphor.dialogTitle")}</DialogTitle>
+          <DialogDescription>{t("metaphor.dialogDescription")}</DialogDescription>
         </DialogHeader>
         {body}
       </DialogContent>

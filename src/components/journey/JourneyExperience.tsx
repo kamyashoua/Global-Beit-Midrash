@@ -4,9 +4,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Flame, Gem, ScrollText } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/LanguageProvider";
 import { useJourney } from "@/context/JourneyProvider";
-import { INTRO_DIALOGUE } from "@/data/intro";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { PRACTICES, TEXTS, VALUES } from "@/data";
+import { INTRO_DIALOGUE } from "@/data/intro";
 import type { JourneyStage } from "@/types/journey";
 import { FinalIslandView } from "@/components/journey/FinalIslandView";
 import { IntroHero } from "@/components/journey/IntroHero";
@@ -34,7 +36,7 @@ export function JourneyExperience() {
     selections,
     toggleSelect,
     canAdvanceFromRealm,
-    limitMessage,
+    limitRealm,
     reflection,
     setReflection,
     resetJourney,
@@ -42,6 +44,7 @@ export function JourneyExperience() {
   } = useJourney();
 
   const [dialogueIndex, setDialogueIndex] = useState(0);
+  const { t } = useLanguage();
 
   useEffect(() => {
     clearLimitMessage();
@@ -52,11 +55,14 @@ export function JourneyExperience() {
   return (
     <PageShell realm={shellRealm}>
       <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[#f4f8ff]/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 md:px-8">
-          <p className="font-display text-base font-semibold tracking-tight text-[var(--foreground)] md:text-lg">
-            The Island We Carry
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-3 md:px-8">
+          <p className="min-w-0 max-w-[55%] font-display text-sm font-semibold leading-tight tracking-tight text-[var(--foreground)] sm:max-w-none sm:text-base md:text-lg">
+            {t("nav.title")}
           </p>
-          <ResetJourneyButton />
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <LanguageToggle className="shrink-0" />
+            <ResetJourneyButton />
+          </div>
         </div>
         {stage !== "intro" && (
           <ProgressTracker
@@ -69,14 +75,13 @@ export function JourneyExperience() {
       <AnimatePresence mode="wait">
         <motion.div
           key={stage}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.35 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
         >
           {stage === "intro" && (
             <IntroHero
-              dialogueLines={INTRO_DIALOGUE}
               dialogueIndex={dialogueIndex}
               onNextDialogue={() =>
                 setDialogueIndex((i) =>
@@ -89,7 +94,7 @@ export function JourneyExperience() {
                   variant="dialog-trigger"
                   trigger={
                     <Button size="lg" variant="secondary" type="button">
-                      How it works
+                      {t("intro.howItWorks")}
                     </Button>
                   }
                 />
@@ -107,9 +112,9 @@ export function JourneyExperience() {
           {stage === "realm-values" && (
             <RealmScreen
               realm="values"
-              title="The Values Realm"
-              eyebrow="Realm I of III"
-              description="Values are the compass. They shape what a community rewards, protects, and refuses to compromise."
+              title={t("journey.values.title")}
+              eyebrow={t("journey.values.eyebrow")}
+              description={t("journey.values.description")}
               Icon={Gem}
               accentClass="text-[#8ab4ff]"
               items={VALUES}
@@ -118,16 +123,16 @@ export function JourneyExperience() {
               onBack={() => setStage("metaphor")}
               onNext={() => setStage("realm-texts")}
               canAdvance={canAdvanceFromRealm("values")}
-              limitMessage={limitMessage}
+              limitRealm={limitRealm}
             />
           )}
 
           {stage === "realm-texts" && (
             <RealmScreen
               realm="texts"
-              title="The Texts Realm"
-              eyebrow="Realm II of III"
-              description="Texts help us carry core ideas into real life choices. Select the teachings you believe should continue shaping Jewish life."
+              title={t("journey.texts.title")}
+              eyebrow={t("journey.texts.eyebrow")}
+              description={t("journey.texts.description")}
               Icon={ScrollText}
               accentClass="text-[#e8c77b]"
               items={TEXTS}
@@ -136,16 +141,16 @@ export function JourneyExperience() {
               onBack={() => setStage("realm-values")}
               onNext={() => setStage("realm-practices")}
               canAdvance={canAdvanceFromRealm("texts")}
-              limitMessage={limitMessage}
+              limitRealm={limitRealm}
             />
           )}
 
           {stage === "realm-practices" && (
             <RealmScreen
               realm="practices"
-              title="The Practices Realm"
-              eyebrow="Realm III of III"
-              description="Practices are how values become lived habits across generations. Choose the practices that should continue in daily Jewish life."
+              title={t("journey.practices.title")}
+              eyebrow={t("journey.practices.eyebrow")}
+              description={t("journey.practices.description")}
               Icon={Flame}
               accentClass="text-[#5eead4]"
               items={PRACTICES}
@@ -154,7 +159,7 @@ export function JourneyExperience() {
               onBack={() => setStage("realm-texts")}
               onNext={() => setStage("island")}
               canAdvance={canAdvanceFromRealm("practices")}
-              limitMessage={limitMessage}
+              limitRealm={limitRealm}
             />
           )}
 
