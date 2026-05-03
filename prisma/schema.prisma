@@ -7,8 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // Use a hosted Postgres connection string (Neon: use the direct / non-pooling URL
-  // for both local dev and Vercel so `migrate deploy` works in CI/build).
+  // Hosted Postgres URL (Neon, etc.). Migrations run via npm run db:migrate:deploy, not during Vercel build.
   url      = env("DATABASE_URL")
 }
 
